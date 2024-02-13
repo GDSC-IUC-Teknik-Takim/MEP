@@ -50,21 +50,45 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 40),
             Text("Forgot password?"),
             SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
-                // Implement login logic
-              },
-              child: Text('Login'),
-            ),
+            LoginButton(),
 
             TextButton(
               onPressed: () {
                 // Navigate to signup screen
               },
-              child: Text("Don't have an account ? Sign Up"),
+              child: Text("Don't have an account ? Sign Up",
+                  style: TextStyle(color:Color.fromRGBO(50, 90, 62, 100)))
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class LoginButton extends StatefulWidget {
+  const LoginButton({
+    super.key,
+  });
+
+  @override
+  State<LoginButton> createState() => _LoginButtonState();
+}
+
+class _LoginButtonState extends State<LoginButton> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        // Implement login logic
+      },
+
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color.fromRGBO(50, 90, 62, 100),
+      fixedSize:Size(300,10)),
+
+      child: Text('Login',textScaleFactor: 1,
+        style: TextStyle(color:Colors.white),
       ),
     );
   }
