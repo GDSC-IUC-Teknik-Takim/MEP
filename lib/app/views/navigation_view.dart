@@ -53,9 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Sayfaların listesi
   final List<Widget> _pages = [
-    Container(color: Colors.white, child: Center(child: Text('Raporlar'))),
-    Container(color: Colors.white, child: Center(child: Text('Ana Sayfa'))),
-    Container(color: Colors.white, child: Center(child: Text('Profil'))),
+    Container(color: Colors.white, child: Center(child: Text('Reports'))),
+    Container(color: Colors.white, child: Center(child: Text('Home'))),
+    Container(color: Colors.white, child: Center(child: Text('Profile'))),
   ];
 
   
