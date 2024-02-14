@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
 
 
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Text("Welcome to MEP",
                 textScaleFactor: 2.5,
             ),
@@ -43,7 +43,7 @@ class LoginScreen extends StatelessWidget {
             Text("Login to your account",
                 textScaleFactor: 1.0,
                 style: TextStyle(color: Colors.grey),),
-            SizedBox(height: 40),
+            SizedBox(height: 50),
             Container(child: Usernamebox(),width: 350),
             SizedBox(height: 20),
             Container(child: PasswordBar(),width:350),
