@@ -4,12 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mep/app/views/report/create_report/report_succesful.dart';
 
-class create_report extends StatefulWidget {
+class CreateReport extends StatefulWidget {
   @override
-  State<create_report> createState() => _create_reportState();
-}
+  State<CreateReport> createState() => _CreateReportState();
 
-class _create_reportState extends State<create_report> {
+}
+TextEditingController fullNameController = new TextEditingController();
+
+class _CreateReportState extends State<CreateReport> {
+
+
+
+  List<CustomTextFormFieldClass> textFormFieldItems = [
+    CustomTextFormFieldClass(label: "Location", icon: Icons.location_on_outlined, controller: fullNameController),
+    CustomTextFormFieldClass(label: "Details", icon: Icons.info_outline, controller: fullNameController),
+  ];
+
+
   String? _selectedPollutionType;
   String? _selectedMuniplicty;
   File? _imageFile;
@@ -31,7 +42,7 @@ class _create_reportState extends State<create_report> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title:Text("Create a report"),),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -91,11 +102,11 @@ class _create_reportState extends State<create_report> {
                   fillColor: Colors.grey[250],
                 ),
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 20,),
               LocationBar(),
-              SizedBox(height: 20.0),
+              SizedBox(height: 20,),
               DetailBar(),
-              SizedBox(height: 20.0),
+              SizedBox(height: 20,),
               GestureDetector(
                 onTap: _getImage,
                 child: Container(
@@ -126,6 +137,14 @@ class _create_reportState extends State<create_report> {
       ),
     );
   }
+}
+
+class CustomTextFormFieldClass {
+  final String label;
+  IconData? icon;
+  TextEditingController controller;
+  CustomTextFormFieldClass({required this.label, this.icon, required this.controller});
+
 }
 
 class SignUpButton extends StatelessWidget {
@@ -224,3 +243,4 @@ class reporttitle extends StatelessWidget {
     );
   }
 }
+

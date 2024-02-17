@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => create_report()),
+                  MaterialPageRoute(builder: (context) => CreateReport()),
                 );
               },
               child: Text("Create Report"))
