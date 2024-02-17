@@ -7,19 +7,9 @@ import 'package:mep/app/views/report/create_report/report_succesful.dart';
 class CreateReport extends StatefulWidget {
   @override
   State<CreateReport> createState() => _CreateReportState();
-
 }
-TextEditingController fullNameController = new TextEditingController();
 
 class _CreateReportState extends State<CreateReport> {
-
-
-
-  List<CustomTextFormFieldClass> textFormFieldItems = [
-    CustomTextFormFieldClass(label: "Location", icon: Icons.location_on_outlined, controller: fullNameController),
-    CustomTextFormFieldClass(label: "Details", icon: Icons.info_outline, controller: fullNameController),
-  ];
-
 
   String? _selectedPollutionType;
   String? _selectedMuniplicty;
@@ -59,7 +49,18 @@ class _CreateReportState extends State<CreateReport> {
                 style: TextStyle(color: Colors.grey),
               ),
               SizedBox(height: 40.0),
-              reporttitle(),
+              TextFormField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.edit),
+                  labelText: 'Report title',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(style: BorderStyle.none),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[250],
+                ),
+              ),
               SizedBox(height: 20.0),
               DropdownButtonFormField<String>(
                 value: _selectedMuniplicty,
@@ -103,9 +104,31 @@ class _CreateReportState extends State<CreateReport> {
                 ),
               ),
               SizedBox(height: 20,),
-              LocationBar(),
+              TextFormField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.location_on_outlined),
+                  labelText: 'Location',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(style: BorderStyle.none),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[250],
+                ),
+              ),
               SizedBox(height: 20,),
-              DetailBar(),
+              TextFormField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.info_outline),
+                  labelText: 'Details',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(style: BorderStyle.none),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[250],
+                ),
+              ),
               SizedBox(height: 20,),
               GestureDetector(
                 onTap: _getImage,
@@ -139,13 +162,6 @@ class _CreateReportState extends State<CreateReport> {
   }
 }
 
-class CustomTextFormFieldClass {
-  final String label;
-  IconData? icon;
-  TextEditingController controller;
-  CustomTextFormFieldClass({required this.label, this.icon, required this.controller});
-
-}
 
 class SignUpButton extends StatelessWidget {
   const SignUpButton({
@@ -178,69 +194,6 @@ class SignUpButton extends StatelessWidget {
   }
 }
 
-class DetailBar extends StatelessWidget {
-  const DetailBar({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.info_outline),
-        labelText: 'Details',
-        border: OutlineInputBorder(
-          borderSide: BorderSide(style: BorderStyle.none),
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        filled: true,
-        fillColor: Colors.grey[250],
-      ),
-    );
-  }
-}
 
-class LocationBar extends StatelessWidget {
-  const LocationBar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.location_on_outlined),
-        labelText: 'Location',
-        border: OutlineInputBorder(
-          borderSide: BorderSide(style: BorderStyle.none),
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        filled: true,
-        fillColor: Colors.grey[250],
-      ),
-    );
-  }
-}
-
-class reporttitle extends StatelessWidget {
-  const reporttitle({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.edit),
-        labelText: 'Report title',
-        border: OutlineInputBorder(
-          borderSide: BorderSide(style: BorderStyle.none),
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        filled: true,
-        fillColor: Colors.grey[250],
-      ),
-    );
-  }
-}
 
