@@ -13,7 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title:Text("Sign in to your account")),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              "Login to your account",
+              "Sign in to your account",
               textScaleFactor: 1.0,
               style: TextStyle(color: Colors.grey),
             ),
@@ -87,7 +87,7 @@ class _LoginButtonState extends State<LoginButton> {
           backgroundColor: Color.fromRGBO(50, 90, 62, 100),
           fixedSize: Size(300, 10)),
       child: Text(
-        'Login',
+        'Sign in',
         textScaleFactor: 1,
         style: TextStyle(color: Colors.white),
       ),

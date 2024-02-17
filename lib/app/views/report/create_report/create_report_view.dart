@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mep/app/data/models/report_model.dart';
+import 'package:mep/app/views/report/my_reports/report_card.dart';
 import 'package:mep/app/views/report/create_report/report_succesful.dart';
+
 
 class CreateReport extends StatefulWidget {
   @override
@@ -10,6 +13,9 @@ class CreateReport extends StatefulWidget {
 }
 
 class _CreateReportState extends State<CreateReport> {
+  TextEditingController TitleController = TextEditingController();
+  TextEditingController LocationController = TextEditingController();
+  TextEditingController DetailController = TextEditingController();
 
   String? _selectedPollutionType;
   String? _selectedMuniplicty;
@@ -43,13 +49,9 @@ class _CreateReportState extends State<CreateReport> {
                 "Create a Report",
                 textScaleFactor: 2.5,
               ),
-              Text(
-                "Create your new account",
-                textScaleFactor: 1.0,
-                style: TextStyle(color: Colors.grey),
-              ),
               SizedBox(height: 40.0),
               TextFormField(
+                controller: TitleController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.edit),
                   labelText: 'Report title',
@@ -105,6 +107,7 @@ class _CreateReportState extends State<CreateReport> {
               ),
               SizedBox(height: 20,),
               TextFormField(
+                controller:LocationController ,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.location_on_outlined),
                   labelText: 'Location',
@@ -118,6 +121,7 @@ class _CreateReportState extends State<CreateReport> {
               ),
               SizedBox(height: 20,),
               TextFormField(
+                controller:DetailController ,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.info_outline),
                   labelText: 'Details',
@@ -153,7 +157,25 @@ class _CreateReportState extends State<CreateReport> {
                 ),
               ),
               SizedBox(height: 40.0),
-              SignUpButton(),
+              ElevatedButton(
+                onPressed: () {
+
+
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(50, 90, 62, 100),
+                    fixedSize: Size(300, 10)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Complete report',
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -162,37 +184,6 @@ class _CreateReportState extends State<CreateReport> {
   }
 }
 
-
-class SignUpButton extends StatelessWidget {
-  const SignUpButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ReportSuccesful()),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromRGBO(50, 90, 62, 100),
-          fixedSize: Size(300, 10)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Complete report',
-            textScaleFactor: 1.2,
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 
 

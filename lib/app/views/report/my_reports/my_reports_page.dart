@@ -10,7 +10,8 @@ class MyReportsPage extends StatefulWidget {
 }
 
 class _MyReportsPageState extends State<MyReportsPage> {
-  final List<Report> reports = [
+
+   List<Report> reports = [
     Report(
         imageUrl:
             "https://sifiratik.co/wp-content/uploads/2018/07/kapak-10.jpg",

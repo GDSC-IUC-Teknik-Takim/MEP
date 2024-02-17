@@ -13,7 +13,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(title:Text("Create a new account",)),
         body: Padding(
           padding: EdgeInsets.all(20.0),
           child: Column(
@@ -22,11 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
               Text(
                 "Sign Up",
                 textScaleFactor: 2.5,
-              ),
-              Text(
-                "Create your new account",
-                textScaleFactor: 1.0,
-                style: TextStyle(color: Colors.grey),
               ),
               SizedBox(height: 40.0),
               Fullnamebar(),
@@ -47,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
-                child: Text("Already have an account ? Login",
+                child: Text("Already have an account ? Sign in",
                     style: TextStyle(color: Color.fromRGBO(50, 90, 62, 100))),
               )
             ],
