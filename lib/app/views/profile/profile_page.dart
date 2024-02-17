@@ -46,34 +46,53 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const CircleAvatar(
-                radius: 50,
+                radius: 90,
                 backgroundImage: AssetImage('assets/images/profile_image.png'),
               ),
+              SizedBox(height: 20,),
               SpaceHeight.xl.value,
-              ProfileTextField(
-                controller: _nameController,
-                label: 'Ad Soyad',
-                isEditing: _isEditing,
-              ),
-              SpaceHeight.l.value,
-              ProfileTextField(
-                controller: _emailController,
-                label: 'E-mail',
-                isEditing: _isEditing,
-              ),
-              SpaceHeight.l.value,
-              ProfileTextField(
-                controller: _phoneController,
-                label: 'Telefon Numarası',
-                isEditing: _isEditing,
-              ),
-              SpaceHeight.l.value,
-              ProfileTextField(
-                controller: _aboutController,
-                label: 'Hakkında',
-                isEditing: _isEditing,
+              Column(
+                children: [
+                  Container(
+                    child:
+                    ProfileTextField(
+                    controller: _nameController,
+                    label: 'Ad Soyad',
+                    isEditing: _isEditing,
+                  ),
+                    height:50,
+                    width: 350,
+                  ),
+                  SpaceHeight.l.value,
+                  Container(
+                    child:ProfileTextField(
+                    controller: _emailController,
+                    label: 'E-mail',
+                    isEditing: _isEditing,
+                  ), height: 50,
+                      width: 350,),
+                  SpaceHeight.l.value,
+                  Container(
+                    child:
+                    ProfileTextField(
+                    controller: _phoneController,
+                    label: 'Telefon Numarası',
+                    isEditing: _isEditing,
+                  ),height: 50,
+                  width: 350,),
+                  SpaceHeight.l.value,
+                  Container(
+                    width: 350,
+                    height: 50,
+                  child:ProfileTextField(
+                    controller: _aboutController,
+                    label: 'Hakkında',
+                    isEditing: _isEditing,
+                  ),)
+                ],
               ),
               SpaceHeight.xl.value,
+              SizedBox(height: 20,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
