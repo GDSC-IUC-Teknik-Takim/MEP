@@ -189,7 +189,6 @@ class LocationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: true,
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.location_on_outlined),
         labelText: 'Location',
