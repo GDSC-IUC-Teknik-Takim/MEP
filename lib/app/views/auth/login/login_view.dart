@@ -14,49 +14,51 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title:Text("Sign in to your account")),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Container(
-              height: 100,
-              width: 300,
-              child: Image(
-                image:
-                    AssetImage('assets/images/meplogo1-removebg-preview.png'),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                height: 100,
+                width: 300,
+                child: Image(
+                  image:
+                      AssetImage('assets/images/meplogo1-removebg-preview.png'),
+                ),
               ),
-            ),
-            const SizedBox(height: 40),
-            const Text(
-              "Welcome to MEP",
-              textScaleFactor: 2.5,
-            ),
-            SizedBox(height: 10),
-            Text(
-              "Sign in to your account",
-              textScaleFactor: 1.0,
-              style: TextStyle(color: Colors.grey),
-            ),
-            SizedBox(height: 50),
-            Container(child: Usernamebox(), width: 350),
-            SizedBox(height: 20),
-            Container(child: PasswordBar(), width: 350),
-            SizedBox(height: 40),
-            Text("Forgot password?"),
-            SizedBox(height: 40),
-            LoginButton(),
-            TextButton(
-                onPressed: () {
-                  // Navigate to signup screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterPage()),
-                  );
-                },
-                child: Text("Don't have an account ? Sign Up",
-                    style: TextStyle(color: Color.fromRGBO(50, 90, 62, 100)))),
-          ],
+              const SizedBox(height: 40),
+              const Text(
+                "Welcome to MEP",
+                textScaleFactor: 2.5,
+              ),
+              SizedBox(height: 10),
+              Text(
+                "Sign in to your account",
+                textScaleFactor: 1.0,
+                style: TextStyle(color: Colors.grey),
+              ),
+              SizedBox(height: 50),
+              Container(child: Usernamebox(), width: 350),
+              SizedBox(height: 20),
+              Container(child: PasswordBar(), width: 350),
+              SizedBox(height: 40),
+              Text("Forgot password?"),
+              SizedBox(height: 40),
+              LoginButton(),
+              TextButton(
+                  onPressed: () {
+                    // Navigate to signup screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                    );
+                  },
+                  child: Text("Don't have an account ? Sign Up",
+                      style: TextStyle(color: Color.fromRGBO(50, 90, 62, 100)))),
+            ],
+          ),
         ),
       ),
     );

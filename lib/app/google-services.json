@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "102564815048",
+    "project_id": "fir-mep",
+    "storage_bucket": "fir-mep.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102564815048:android:f49e96f5f67307114f85fd",
+        "android_client_info": {
+          "package_name": "com.example.mep"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtcx3BTTZ1DCCKD_9OytxJd5uOE29PRSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mep/app/views/auth/login/login_view.dart';
+import 'package:mep/app/views/auth/register/register_view.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -18,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
       // 3 saniye sonra ana ekrana yönlendirme işlemini gerçekleştir
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        MaterialPageRoute(builder: (context) => const RegisterPage()),
       );
     });
   }
