@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mep/app/core/constants/color_constant.dart';
 import 'package:mep/app/core/enums/space.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:mep/app/data/models/report_model.dart';
+
+
 
 class Buttons extends StatelessWidget {
   const Buttons({super.key});
@@ -16,7 +20,10 @@ class Buttons extends StatelessWidget {
         ),
         SpaceWidth.m.value,
         Button(
-          onPressed: () {},
+          onPressed: () {
+            Share.share( "a",);
+
+          },
           iconData: Icons.share,
         ),
         SpaceWidth.m.value,
