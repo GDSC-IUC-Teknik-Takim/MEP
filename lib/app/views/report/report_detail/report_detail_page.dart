@@ -1,16 +1,14 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mep/app/core/enums/space.dart';
 import 'package:mep/app/data/models/report_model.dart';
 import 'package:mep/app/views/report/report_detail/buttons.dart';
-import 'dart:async';
-import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 class ReportDetailPage extends StatefulWidget {
   final Report report;
 
-  const ReportDetailPage({super.key, required this.report});
+  const ReportDetailPage({Key? key, required this.report}) : super(key: key);
 
   @override
   State<ReportDetailPage> createState() => _ReportDetailPageState();
@@ -29,10 +27,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
           SizedBox(
             width: 330,
             height: 260,
-            child: Image.network(
-              widget.report.imageUrl,
-              fit: BoxFit.cover,
-            ),
+            child: _buildImageFromBase64(),
           ),
           SpaceHeight.l.value,
           const Buttons(),
@@ -57,5 +52,18 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
         ],
       ),
     );
+  }
+
+  // Function to build an image widget from a base64-encoded image string
+  Widget _buildImageFromBase64() {
+    if (widget.report.imageBase64Strings.isNotEmpty) {
+      final String base64String = widget.report.imageBase64Strings.first;
+      final List<int> bytes = base64.decode(base64String);
+      final Uint8List uint8List = Uint8List.fromList(bytes); // Convert List<int> to Uint8List
+      return Image.memory(uint8List, fit: BoxFit.cover);
+    } else {
+      // Return a placeholder widget if no images are available
+      return Placeholder();
+    }
   }
 }

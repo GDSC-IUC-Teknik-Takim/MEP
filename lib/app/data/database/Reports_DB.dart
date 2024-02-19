@@ -20,7 +20,7 @@ class ReportsDB {
   }
 
 
-  Future<int> createReport(Report report) async {
+ /*Future<int> createReport(Report report) async {
     final database = await DatabaseService().database;
     return await database.insert(tableName, report.toMap());
   }
@@ -31,3 +31,4 @@ class ReportsDB {
     return reports.map((map) => Report.fromMap(map)).toList();
   }
 }
+*/}

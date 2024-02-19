@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:mep/app/data/models/report_model.dart';
 import 'package:mep/app/data/database/Reports_DB.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:convert';
 
 class CreateReport extends StatefulWidget {
   @override
@@ -11,49 +15,51 @@ class CreateReport extends StatefulWidget {
 }
 
 class _CreateReportState extends State<CreateReport> {
+  List<XFile>? pickedImages;
+  List<String> imageBase64Strings = [];
+
+  Future uploadImages() async {
+    if (pickedImages != null) {
+      for (XFile image in pickedImages!) {
+        // Read the bytes of the image file
+        List<int> bytes = await image.readAsBytes();
+        // Encode the bytes as a base64 string
+        String base64Image = base64Encode(bytes);
+        // Add the base64 string to the list
+        imageBase64Strings.add(base64Image);
+      }
+    }
+  }
+
+  Future selectImages() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: true,
+    );
+    if (result != null) {
+      setState(() {
+        pickedImages = result.files.map((file) => XFile(file.path!)).toList();
+      });
+    }
+  }
+
   TextEditingController titleController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController detailController = TextEditingController();
 
-  String? selectedPollutionType;
-  String? selectedMunicipality;
-  File? imageFile;
+  String selectedPollutionType = 'Select pollution type';
+  String selectedMunicipality = 'Select Municipality';
 
-  final List<String> pollutionTypes = ['Air Pollution', 'Water Pollution', 'Land Pollution'];
-  final List<String> municipalities = ['Kadikoy', 'Avcilar', 'Kucukcekmece'];
+  final List<String> pollutionTypes = ['Air Pollution', 'Water Pollution', 'Land Pollution','Select pollution type'];
+  final List<String> municipalities = ['Kadikoy', 'Avcilar', 'Kucukcekmece','Select Municipality'];
 
-  Future<void> getImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      imageFile = File(pickedFile!.path);
-    });
-  }
-
-  void createReport() async {
-    // Create a new report object
-    Report report = Report(
-      imageUrl: imageFile != null ? imageFile!.path : '', // Store image path if available
-      reportTitle: titleController.text,
-      reportDetail: detailController.text,
-      reportType: selectedPollutionType ?? '',
-      municipality: selectedMunicipality ?? '',
-      date: DateTime.now().toString(), // Store current date
-      status: 'Pending', // Assuming all reports start with 'Pending' status
-    );
-
-    // Save the report to the database
-    await ReportsDB().createReport(report);
-
-    // Navigate back to the previous screen
-    Navigator.pop(context);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create a report")),
+      appBar: AppBar(
+          title: Text("Create a report")
+      ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -79,7 +85,7 @@ class _CreateReportState extends State<CreateReport> {
                 }).toList(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    selectedMunicipality = newValue;
+                    selectedMunicipality = newValue!;
                   });
                 },
                 decoration: InputDecoration(
@@ -98,7 +104,7 @@ class _CreateReportState extends State<CreateReport> {
                 }).toList(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    selectedPollutionType = newValue;
+                    selectedPollutionType = newValue!;
                   });
                 },
                 decoration: InputDecoration(
@@ -122,32 +128,32 @@ class _CreateReportState extends State<CreateReport> {
                   labelText: 'Details',
                 ),
               ),
-              SizedBox(height: 20,),
-              GestureDetector(
-                onTap: getImage,
-                child: Container(
-                  width: double.infinity,
-                  height: 100,
-                  color: Colors.grey[200],
-                  child: imageFile != null
-                      ? Image.file(
-                    imageFile!,
-                    fit: BoxFit.cover,
-                  )
-                      : Center(
-                    child: Text(
-                      'Add an Image',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+
               SizedBox(height: 40.0),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: selectImages,
+                      child: Text("Select image(s)"),
+                    )
+                  ]
+              ),
+              SizedBox(height:20,),
               ElevatedButton(
-                onPressed: createReport,
+                onPressed: () async {
+                  await uploadImages();
+                  final Nreport = Report(
+                    reportTitle: titleController.text,
+                    imageBase64Strings: imageBase64Strings,
+                    status: 'Pending',
+                    reportDetail: detailController.text,
+                    reportType: selectedPollutionType,
+                    municipality: selectedMunicipality,
+                    date: DateTime.now().toString(),
+                  );
+                  await completeReport(Nreport);
+                },
                 child: Text('Complete report'),
               ),
             ],
@@ -156,4 +162,18 @@ class _CreateReportState extends State<CreateReport> {
       ),
     );
   }
+}
+
+Future<void> completeReport(Report report) async {
+  final docReport = FirebaseFirestore.instance.collection('report').doc();
+  final json = {
+    'reportTitle': report.reportTitle,
+    'imageBase64Strings': report.imageBase64Strings,
+    'status': 'pending',
+    'reportDetail': report.reportDetail,
+    'reportType': report.reportType,
+    'municipality': report.municipality,
+    'date': DateTime.now().toString(),
+  };
+  await docReport.set(json);
 }
