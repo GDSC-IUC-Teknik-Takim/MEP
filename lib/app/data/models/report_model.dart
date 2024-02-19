@@ -1,15 +1,7 @@
-import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:flutter/widgets.dart';
-import 'package:mep/app/data/database/database_service.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:mep/app/data/database/Reports_DB.dart';
-
 class Report {
   final int? id;
   final String reportTitle;
-  final String imageUrl;
+  final List<String> imageBase64Strings; // New field to store base64-encoded image strings
   final String status;
   final String reportDetail;
   final String reportType;
@@ -19,7 +11,7 @@ class Report {
   Report({
     this.id,
     required this.reportTitle,
-    required this.imageUrl,
+    required this.imageBase64Strings,
     required this.status,
     required this.reportDetail,
     required this.reportType,
@@ -27,30 +19,22 @@ class Report {
     required this.date,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'reportTitle': reportTitle,
-      'imageUrl': imageUrl,
-      'status': status,
-      'reportDetail': reportDetail,
-      'reportType': reportType,
-      'municipality': municipality,
-      'date': date,
-    };
-  }
+  static Report fromJson(Map<String, dynamic> json) {
+    // Convert image base64 strings from dynamic to List<String>
+    List<String> imageBase64Strings = [];
+    if (json['imageBase64Strings'] != null) {
+      for (var imageBase64String in json['imageBase64Strings']) {
+        imageBase64Strings.add(imageBase64String as String);
+      }
+    }
 
-  factory Report.fromMap(Map<String, dynamic> map) {
     return Report(
-      id: map['id'],
-      reportTitle: map['reportTitle'],
-      imageUrl: map['imageUrl'],
-      status: map['status'],
-      reportDetail: map['reportDetail'],
-      reportType: map['reportType'],
-      municipality: map['municipality'],
-      date: map['date'],
+      reportTitle: json['reportTitle'] ?? '',
+      imageBase64Strings: List<String>.from(json['imageBase64Strings'] ?? []),      status: json['status'] ?? '',
+      reportDetail: json['reportDetail'] ?? '',
+      reportType: json['reportType'] ?? '',
+      municipality: json['municipality'] ?? '',
+      date: json['date'] ?? '',
     );
   }
 }
-
