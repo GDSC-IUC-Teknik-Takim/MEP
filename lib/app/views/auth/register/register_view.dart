@@ -144,26 +144,21 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _authService
-                            .registerUser(
-                          fullname: _fullnameController.text,
+                            .signUp(
+                          context,
+                          name: _fullnameController.text,
                           email: _emailController.text,
                           password: _passwordController.text,
                         )
-                            .then((success) {
-                          if (success) {
-                           
-
-                         
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
-                            );
-                          } else {
-                            
-                          }
+                            .then((_) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
+                          );
                         }).catchError((error) {
-                          
+                          // Hata durumunda yapılacak işlemler
                         });
                       }
                     },
