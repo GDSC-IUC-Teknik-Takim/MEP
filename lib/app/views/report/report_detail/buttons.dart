@@ -4,17 +4,24 @@ import 'package:mep/app/core/constants/color_constant.dart';
 import 'package:mep/app/core/enums/space.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:mep/app/data/models/report_model.dart';
-
+import 'package:mep/app/views/auth/register/register_service.dart';
 import '../my_reports/my_reports_page.dart';
 
 
 
-class Buttons extends StatelessWidget {
+class Buttons extends StatefulWidget {
   const Buttons({super.key,required this.report});
   final Report report;
 
   @override
+  State<Buttons> createState() => _ButtonsState();
+}
+
+class _ButtonsState extends State<Buttons> {
+
+  @override
   Widget build(BuildContext context) {
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -22,11 +29,11 @@ class Buttons extends StatelessWidget {
           onPressed: ()
           {
             final docUser = FirebaseFirestore
-           .instance.collection('report').doc(report.id);
+           .instance.collection('report').doc(widget.report.id);
             docUser.delete();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyReportsPage(userId: UserId,)),
+              MaterialPageRoute(builder: (context) => MyReportsPage(userId:userId,)),
             );
           },
           iconData: Icons.delete,
