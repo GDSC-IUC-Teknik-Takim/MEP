@@ -52,8 +52,15 @@ class _CreateReportState extends State<CreateReport> {
   String selectedMunicipality = 'Select Municipality';
 
   final List<String> pollutionTypes = ['Air Pollution', 'Water Pollution', 'Land Pollution','Select pollution type'];
-  final List<String> municipalities = ['Kadikoy', 'Avcilar', 'Kucukcekmece','Select Municipality'];
-
+  final List<String> municipalities = ['Kadıköy', 'Avcılar', 'Küçükçekmece','Select Municipality'];
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    titleController.dispose();
+    locationController.dispose();
+    detailController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,6 +159,7 @@ class _CreateReportState extends State<CreateReport> {
                   );
                   final Nreport = Report(
                     id: reportId,
+                    senderId: UserId,
                     reportTitle: titleController.text,
                     imageBase64Strings: imageBase64Strings,
                     status: 'Pending',
@@ -163,7 +171,7 @@ class _CreateReportState extends State<CreateReport> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MyReportsPage()
+                          builder: (context) => MyReportsPage(userId: UserId,)
                       )
                   );
                   // Used Nreport as needed

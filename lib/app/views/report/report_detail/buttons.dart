@@ -26,7 +26,7 @@ class Buttons extends StatelessWidget {
             docUser.delete();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyReportsPage()),
+              MaterialPageRoute(builder: (context) => MyReportsPage(userId: UserId,)),
             );
           },
           iconData: Icons.delete,

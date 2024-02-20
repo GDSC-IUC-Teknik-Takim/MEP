@@ -1,13 +1,14 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mep/app/views/report/my_reports/report_card.dart';
 
 import '../../../data/models/report_model.dart';
-class MyReportsPage extends StatelessWidget {
-  ///String belediyeId; //belediyenin kendi idsi
-  final String belediyeRId; // raporda şikayet edilen belediyenin idsi
+class MyReportsPageAdmin extends StatelessWidget {
+  ///String UserId; //belediyenin kendi idsi
+  final String municipalityId; // raporda şikayet edilen belediyenin idsi
 
-  const MyReportsPage({Key? key, required this.belediyeRId}) : super(key: key);
+  const MyReportsPageAdmin({Key? key, required this.municipalityId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class MyReportsPage extends StatelessWidget {
       body: StreamBuilder<List<Report>>(
         stream: FirebaseFirestore.instance
             .collection('report')
-            .where('belediyeRId', isEqualTo: "a"/*belediyeId*/) // Filter reports by şikayetid
+            .where('MunicipalityId', isEqualTo: "a"/*UserId*/) // Filter reports by şikayetid
             .snapshots()
             .map((snapshot) => snapshot.docs
             .map((doc) => Report.fromJson(doc.data()))
@@ -41,3 +42,5 @@ class MyReportsPage extends StatelessWidget {
     );
   }
 }
+
+ */

@@ -1,5 +1,6 @@
 class Report {
-  final String id; // Change the type to String to accommodate Firestore document IDs
+  final String id;
+  final String senderId;
   final String reportTitle;
   final List<String> imageBase64Strings;
   final String status;
@@ -9,7 +10,8 @@ class Report {
   final String date;
 
   Report({
-    required this.id, // Make the id field required
+    required this.id,
+    required this.senderId,
     required this.reportTitle,
     required this.imageBase64Strings,
     required this.status,
@@ -30,6 +32,7 @@ class Report {
     return Report(
       id: id,
       reportTitle: json['reportTitle'] ?? '',
+      senderId: json['senderId'] ?? '',
       imageBase64Strings: List<String>.from(json['imageBase64Strings'] ?? []),
       status: json['status'] ?? '',
       reportDetail: json['reportDetail'] ?? '',

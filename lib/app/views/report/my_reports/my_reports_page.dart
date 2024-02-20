@@ -4,7 +4,9 @@ import 'package:mep/app/views/report/my_reports/report_card.dart';
 import '../../../data/models/report_model.dart';
 
 class MyReportsPage extends StatelessWidget {
-  const MyReportsPage({Key? key}) : super(key: key);
+  final String userId; // Assuming you have a way to get the current user's ID
+
+  const MyReportsPage({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +17,7 @@ class MyReportsPage extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('report')
+            .where('senderId', isEqualTo: userId)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -22,33 +25,30 @@ class MyReportsPage extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            final List<QueryDocumentSnapshot> documents = snapshot.data!.docs.toList();
-            final List<ReportData> reportDataList = documents.map((doc) {
+            final List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
+            final List<Report> reports = documents.map((doc) {
               final String id = doc.id; // Get the document ID
               final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-              return ReportData(id: id, data: data); // Create a custom object containing ID and data
-            }).toList();
-
-            List<Report> reports = reportDataList.map((reportData) {
-              // Convert the custom object to a Report object
-              return Report.fromJson(reportData.id, reportData.data);
+              return Report.fromJson(id, data); // Pass the ID to your Report.fromJson constructor
             }).toList();
 
             if (reports.isEmpty) {
               return Center(child: Text('No reports available.'));
             } else {
-              return ReportCard(reports: reports);
+              return ListView.builder(
+                itemCount: reports.length,
+                itemBuilder: (context, index) {
+                  final report = reports[index];
+                  return ListTile(
+                    title: Text(report.reportTitle),
+                    // Add other report details as needed
+                  );
+                },
+              );
             }
           }
         },
       ),
     );
   }
-}
-
-class ReportData {
-  final String id;
-  final Map<String, dynamic> data;
-
-  ReportData({required this.id, required this.data});
 }

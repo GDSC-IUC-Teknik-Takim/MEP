@@ -42,7 +42,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
 
   // Sayfaların listesi
   final List _pages = [
-    const MyReportsPage(),
+    const MyReportsPage(userId: UserId,),
     const HomePage(),
     const ProfilePage(),
   ];
