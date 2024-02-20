@@ -30,7 +30,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
             child: _buildImageFromBase64(),
           ),
           SpaceHeight.l.value,
-          const Buttons(),
+          Buttons(report: widget.report),
           SpaceHeight.l.value,
           Column(
             mainAxisAlignment: MainAxisAlignment.start,

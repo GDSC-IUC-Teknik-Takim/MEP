@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:mep/app/data/models/report_model.dart';
 import '../report_detail/report_detail_page.dart';

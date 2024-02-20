@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:mep/app/data/models/report_model.dart';
-import 'package:mep/app/data/database/Reports_DB.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:convert';
+
+import '../my_reports/my_reports_page.dart';
 
 class CreateReport extends StatefulWidget {
   @override
@@ -52,7 +53,6 @@ class _CreateReportState extends State<CreateReport> {
 
   final List<String> pollutionTypes = ['Air Pollution', 'Water Pollution', 'Land Pollution','Select pollution type'];
   final List<String> municipalities = ['Kadikoy', 'Avcilar', 'Kucukcekmece','Select Municipality'];
-
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +143,15 @@ class _CreateReportState extends State<CreateReport> {
               ElevatedButton(
                 onPressed: () async {
                   await uploadImages();
+                  final reportId = await completeReport(
+                    titleController.text,
+                    imageBase64Strings,
+                    detailController.text,
+                    selectedPollutionType,
+                    selectedMunicipality,
+                  );
                   final Nreport = Report(
+                    id: reportId,
                     reportTitle: titleController.text,
                     imageBase64Strings: imageBase64Strings,
                     status: 'Pending',
@@ -152,7 +160,13 @@ class _CreateReportState extends State<CreateReport> {
                     municipality: selectedMunicipality,
                     date: DateTime.now().toString(),
                   );
-                  await completeReport(Nreport);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyReportsPage()
+                      )
+                  );
+                  // Used Nreport as needed
                 },
                 child: Text('Complete report'),
               ),
@@ -164,16 +178,24 @@ class _CreateReportState extends State<CreateReport> {
   }
 }
 
-Future<void> completeReport(Report report) async {
+Future<String> completeReport(
+    String reportTitle,
+    List<String> imageBase64Strings,
+    String reportDetail,
+    String reportType,
+    String municipality,
+    ) async {
   final docReport = FirebaseFirestore.instance.collection('report').doc();
   final json = {
-    'reportTitle': report.reportTitle,
-    'imageBase64Strings': report.imageBase64Strings,
+    'reportTitle': reportTitle,
+    'imageBase64Strings': imageBase64Strings,
     'status': 'pending',
-    'reportDetail': report.reportDetail,
-    'reportType': report.reportType,
-    'municipality': report.municipality,
+    'reportDetail': reportDetail,
+    'reportType': reportType,
+    'municipality': municipality,
     'date': DateTime.now().toString(),
   };
   await docReport.set(json);
+
+  return docReport.id; // Return the ID of the newly created document
 }

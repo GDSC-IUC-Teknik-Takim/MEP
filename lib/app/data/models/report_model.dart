@@ -1,7 +1,7 @@
 class Report {
-  final int? id;
+  final String id; // Change the type to String to accommodate Firestore document IDs
   final String reportTitle;
-  final List<String> imageBase64Strings; // New field to store base64-encoded image strings
+  final List<String> imageBase64Strings;
   final String status;
   final String reportDetail;
   final String reportType;
@@ -9,7 +9,7 @@ class Report {
   final String date;
 
   Report({
-    this.id,
+    required this.id, // Make the id field required
     required this.reportTitle,
     required this.imageBase64Strings,
     required this.status,
@@ -19,8 +19,7 @@ class Report {
     required this.date,
   });
 
-  static Report fromJson(Map<String, dynamic> json) {
-    // Convert image base64 strings from dynamic to List<String>
+  static Report fromJson(String id, Map<String, dynamic> json) {
     List<String> imageBase64Strings = [];
     if (json['imageBase64Strings'] != null) {
       for (var imageBase64String in json['imageBase64Strings']) {
@@ -29,8 +28,10 @@ class Report {
     }
 
     return Report(
+      id: id,
       reportTitle: json['reportTitle'] ?? '',
-      imageBase64Strings: List<String>.from(json['imageBase64Strings'] ?? []),      status: json['status'] ?? '',
+      imageBase64Strings: List<String>.from(json['imageBase64Strings'] ?? []),
+      status: json['status'] ?? '',
       reportDetail: json['reportDetail'] ?? '',
       reportType: json['reportType'] ?? '',
       municipality: json['municipality'] ?? '',
