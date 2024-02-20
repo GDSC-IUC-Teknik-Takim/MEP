@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mep/app/views/home/home_view.dart';
 
 class AuthService {
   final userCollection = FirebaseFirestore.instance.collection("users");
@@ -10,29 +12,50 @@ class AuthService {
 
 
   Future<void> signUp(BuildContext context, {required String name, required String email, required String password}) async {
-    final navigator = Navigator.of(context);
-    try {
-      final UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      if (userCredential.user != null )  {
-        await _registerUser(userId: userCredential.user!.uid, name: name, email: email, password: password);
-      }
-    } on FirebaseAuthException catch (e) {
-      // Handle sign up errors
+  final navigator = Navigator.of(context);
+  try {
+    final UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+    if (userCredential.user != null )  {
+      // Auth ile kullanıcı oluşturulduktan sonra user id'sini alıyoruz.
+      String userId = userCredential.user!.uid;
+      
+      // Oluşturulan kullanıcı için Firestore'a kayıt yapılıyor.
+      await _registerUser(userId: userId, name: name, email: email, password: password);
     }
+  } on FirebaseAuthException catch (e) {
+    // Hata durumunda buraya düşebilirsiniz.
+    // Hata işlemlerini burada yapabilirsiniz.
   }
+}
 
   Future<void> signIn(BuildContext context, {required String email, required String password}) async {
-    final navigator = Navigator.of(context);
-    try {
-      final UserCredential userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      if (userCredential.user != null) {
-        print("User ID: ${userCredential.user!.uid}"); // Print user ID
-        await getUserData(userCredential.user!.uid);
-      }
-    } on FirebaseAuthException catch(e) {
-      // Handle sign in errors
+  final navigator = Navigator.of(context);
+  try {
+    final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+    if (userCredential.user != null) {
+      print("User ID: ${userCredential.user!.uid}");
+      await getUserData(userCredential.user!.uid);
+      
+      // Do the navigation to home_view.dart
+      navigator.pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => HomePage(), // Assuming HomeView is the name of your home page widget.
+        ),
+      );
     }
+  } on FirebaseAuthException catch (e) {
+    String errorMessage = 'Username or password is incorrect';
+    Fluttertoast.showToast(
+      msg: errorMessage,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
+}
 
   Future<void> _registerUser({required String userId, required String name, required String email, required String password}) async {
     await userCollection.doc(userId).set({
@@ -46,7 +69,7 @@ class AuthService {
   try {
     DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
     if (userDoc.exists) {
-      String fullName = userDoc['fullname'];
+      String fullName = userDoc['name'];
       String email = userDoc['email'];
 
       print('Full Name: $fullName');

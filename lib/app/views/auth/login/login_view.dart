@@ -110,22 +110,10 @@ class LoginButton extends StatelessWidget {
         print('Email: $email');
         print('Password: $password');
 
-        authService.signIn(context,email: email,password: password).then((_) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomePage(),
-                            ),
-                          );
-                        }).catchError((error) {
-                          // Hata durumunda yapılacak işlemler
-                        });; 
+        authService.signIn(context,email: email,password: password);
 
         // Implement login logic
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NavigationBarPage()),
-        );
+       
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromRGBO(50, 90, 62, 100),
