@@ -33,7 +33,7 @@ class _ButtonsState extends State<Buttons> {
             docUser.delete();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyReportsPage(userId:userId,)),
+              MaterialPageRoute(builder: (context) => MyReportsPage()),
             );
           },
           iconData: Icons.delete,

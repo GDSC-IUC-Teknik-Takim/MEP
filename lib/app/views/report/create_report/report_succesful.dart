@@ -80,10 +80,7 @@ class ReportSuccesful extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => NavigationBarPage()),
-                        );
+
                       },
                       child: Text('Continue'),
                     ),

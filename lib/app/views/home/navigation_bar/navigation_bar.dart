@@ -3,8 +3,12 @@ import 'package:mep/app/views/home/home_view.dart';
 import 'package:mep/app/views/profile/profile_page.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_page.dart';
 
+import 'package:flutter/material.dart';
+
 class NavigationBarPage extends StatefulWidget {
-  const NavigationBarPage({super.key});
+  final Widget content;
+
+  const NavigationBarPage({Key? key, required this.content}) : super(key: key);
 
   @override
   State<NavigationBarPage> createState() => _NavigationBarPageState();
@@ -16,7 +20,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: widget.content,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -40,9 +44,8 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
     );
   }
 
-  // Sayfaların listesi
-  final List _pages = [
-    const MyReportsPage(userId: UserId,),
+  final List<Widget> _pages = [
+    const MyReportsPage(),
     const HomePage(),
     const ProfilePage(),
   ];

@@ -159,7 +159,6 @@ class _CreateReportState extends State<CreateReport> {
                   );
                   final Nreport = Report(
                     id: reportId,
-                    senderId: UserId,
                     reportTitle: titleController.text,
                     imageBase64Strings: imageBase64Strings,
                     status: 'Pending',
@@ -171,7 +170,7 @@ class _CreateReportState extends State<CreateReport> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MyReportsPage(userId: UserId,)
+                          builder: (context) => MyReportsPage()
                       )
                   );
                   // Used Nreport as needed
