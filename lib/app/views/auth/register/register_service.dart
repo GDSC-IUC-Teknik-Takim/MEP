@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mep/app/views/home/home_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final userCollection = FirebaseFirestore.instance.collection("users");
@@ -34,6 +35,10 @@ class AuthService {
     final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
     if (userCredential.user != null) {
       print("User ID: ${userCredential.user!.uid}");
+
+      // Kullanıcı kimliğini shared preferences'e kaydet
+      await saveUserId(userCredential.user!.uid);
+
       await getUserData(userCredential.user!.uid);
       
       // Do the navigation to home_view.dart
@@ -57,6 +62,23 @@ class AuthService {
   }
 }
 
+// Kullanıcı kimliğini shared preferences'e kaydeden fonksiyon
+Future<void> saveUserId(String userId) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('userId', userId);
+}
+
+Future<String?> UserIDdondur() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('userId');
+}
+
+// Kullanıcı kimliğini shared preferences'ten alıp döndüren fonksiyon
+Future<String?> getUserId() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('userId');
+}
+
   Future<void> _registerUser({required String userId, required String name, required String email, required String password}) async {
     await userCollection.doc(userId).set({
       "email" : email,
@@ -74,6 +96,13 @@ class AuthService {
 
       print('Full Name: $fullName');
       print('Email: $email');
+
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('fullName', fullName);
+      await prefs.setString('email', email);
+      
+      print('Name and Email saved to SharedPreferences.');
     } else {
       print('User document does not exist');
     }
@@ -81,5 +110,4 @@ class AuthService {
     print('Error getting user data: $e');
   }
 }
-
 }
