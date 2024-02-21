@@ -4,8 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mep/app/views/home/admin_home_view.dart';
 import 'package:mep/app/views/home/home_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mep/app/views/report/my_reports/my_reports_admin_page.dart';
+import 'package:mep/app/views/report/my_reports/my_reports_page.dart';
 
 class AuthService {
   final userCollection = FirebaseFirestore.instance.collection("users");
@@ -38,15 +41,27 @@ class AuthService {
 
       // Kullanıcı kimliğini shared preferences'e kaydet
       await saveUserId(userCredential.user!.uid);
-
       await getUserData(userCredential.user!.uid);
-      
-      // Do the navigation to home_view.dart
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String fullName = prefs.getString('fullName') ?? '';
+
+      final List<String> municipalities = ['Kadıköy', 'Avcılar', 'Küçükçekmece','Select Municipality'];
+      if(municipalities.contains(fullName)){
       navigator.pushReplacement(
         MaterialPageRoute(
-          builder: (context) => HomePage(), // Assuming HomeView is the name of your home page widget.
+          builder: (context) => AdminHomePage(), // Assuming HomeView is the name of your home page widget.
         ),
       );
+      }
+      else
+      {
+        navigator.pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => HomePage(), // Assuming HomeView is the name of your home page widget.
+          ),
+        );
+
+      }
     }
   } on FirebaseAuthException catch (e) {
     String errorMessage = 'Username or password is incorrect';
@@ -93,7 +108,6 @@ Future<String?> getUserId() async {
     if (userDoc.exists) {
       String fullName = userDoc['name'];
       String email = userDoc['email'];
-
       print('Full Name: $fullName');
       print('Email: $email');
 

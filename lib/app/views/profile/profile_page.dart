@@ -162,13 +162,13 @@ class _ProfilePageState extends State<ProfilePage> {
     });
 
     if (index == 0) {
-      // 'Reports' sayfasına yönlendirme yapılabilir
+      // 'Reports' sayfasına yönlendirme
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyReportsPage()),
       );
     } else if (index == 1) {
-      // 'Home' sayfasına yönlendirme yapılabilir
+      // 'Home' sayfasına yönlendirme
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),

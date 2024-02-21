@@ -12,13 +12,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 1; // yeni ekledim
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home Page"),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 70.0, bottom: 8.0), // Yazının üstünde ve altında boşluk oluşturur
+                child: Text(
+                  "           Home",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: Center(
         child: Column(
@@ -64,18 +84,15 @@ class _HomePageState extends State<HomePage> {
     });
 
     if (index == 0) {
-      // 'Reports' sayfasına yönlendirme yapılabilir
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyReportsPage()),
       );
     } else if (index == 2) {
-      // 'Profile' sayfasına yönlendirme yapılabilir
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     }
   }
-
 }

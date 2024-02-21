@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mep/app/views/auth/register/register_view.dart';
-import 'package:mep/app/views/home/home_view.dart';
-import 'package:mep/app/views/home/navigation_bar/navigation_bar.dart';
 import 'package:mep/app/views/auth/register/register_service.dart';
+
+
+
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -27,55 +29,76 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Sign in to your account")),
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                height: 100,
-                width: 300,
-                child: Image(
-                  image: AssetImage('assets/images/meplogo1-removebg-preview.png'),
+        child: Column(
+          children: <Widget>[
+            PreferredSize(
+              preferredSize: Size.fromHeight(kToolbarHeight + 24.0), // App bar height + 24px additional space
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 70.0), // Padding on top
+                    Text(
+                      "             Sign in to your account",
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    SizedBox(height: 40.0), // Padding between text and form fields
+                  ],
                 ),
               ),
-              const SizedBox(height: 40),
-              const Text(
-                "Welcome to MEP",
-                textScaleFactor: 2.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    height: 100,
+                    width: 300,
+                    child: Image(
+                      image: AssetImage('assets/images/meplogo1-removebg-preview.png'),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  const Text(
+                    "Welcome to MEP",
+                    textScaleFactor: 2.5,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Sign in to your account",
+                    textScaleFactor: 1.0,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(height: 50),
+                  Container(child: Usernamebox(emailController: emailController), width: 350),
+                  SizedBox(height: 20),
+                  Container(child: PasswordBar(passwordController: passwordController), width: 350),
+                  SizedBox(height: 40),
+                  Text("Forgot password?"),
+                  SizedBox(height: 40),
+                  LoginButton(
+                    emailController: emailController,
+                    passwordController: passwordController,
+                    authService: _authService,
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        // Navigate to signup screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RegisterPage()), // RegisterScreen kullanıyoruz
+                        );
+                      },
+                      child: Text("Don't have an account ? Sign Up",
+                          style: TextStyle(color: Color.fromRGBO(50, 90, 62, 100)))),
+                ],
               ),
-              SizedBox(height: 10),
-              Text(
-                "Sign in to your account",
-                textScaleFactor: 1.0,
-                style: TextStyle(color: Colors.grey),
-              ),
-              SizedBox(height: 50),
-              Container(child: Usernamebox(emailController: emailController), width: 350),
-              SizedBox(height: 20),
-              Container(child: PasswordBar(passwordController: passwordController), width: 350),
-              SizedBox(height: 40),
-              Text("Forgot password?"),
-              SizedBox(height: 40),
-              LoginButton(
-                emailController: emailController,
-                passwordController: passwordController,
-                authService: _authService, 
-              ),
-              TextButton(
-                  onPressed: () {
-                    // Navigate to signup screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()), // RegisterScreen kullanıyoruz
-                    );
-                  },
-                  child: Text("Don't have an account ? Sign Up",
-                      style: TextStyle(color: Color.fromRGBO(50, 90, 62, 100)))),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -105,8 +128,9 @@ class LoginButton extends StatelessWidget {
 
         authService.signIn(context,email: email,password: password);
 
+
         // Implement login logic
-       
+
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromRGBO(50, 90, 62, 100),
@@ -158,15 +182,15 @@ class Usernamebox extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
         decoration: InputDecoration(
-      prefixIcon: Icon(Icons.account_box_outlined),
-      labelText: 'Email',
-      border: OutlineInputBorder(
-        borderSide: BorderSide(style: BorderStyle.none),
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      filled: true,
-      fillColor: Colors.grey[250],
-    ),
-    controller: emailController);
+          prefixIcon: Icon(Icons.account_box_outlined),
+          labelText: 'Email',
+          border: OutlineInputBorder(
+            borderSide: BorderSide(style: BorderStyle.none),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          filled: true,
+          fillColor: Colors.grey[250],
+        ),
+        controller: emailController);
   }
 }
