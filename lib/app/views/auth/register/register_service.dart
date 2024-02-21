@@ -15,22 +15,62 @@ class AuthService {
   final firebaseAuth = FirebaseAuth.instance;
 
 
-  Future<void> signUp(BuildContext context, {required String name, required String email, required String password}) async {
+ Future<void> signUp(BuildContext context, {required String name, required String email, required String password}) async {
   final navigator = Navigator.of(context);
   try {
+    final QuerySnapshot nameCheck = await FirebaseFirestore.instance
+        .collection('users')
+        .where('name', isEqualTo: name)
+        .get();
+
+    final QuerySnapshot emailCheck = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (nameCheck.docs.isNotEmpty || emailCheck.docs.isNotEmpty) {
+      // Eğer veritabanında aynı isim veya e-posta ile kayıtlı bir kullanıcı varsa
+      Fluttertoast.showToast(
+        msg: "User with the same name or email already exists",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return;
+    }
+
     final UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-    if (userCredential.user != null )  {
+    if (userCredential.user != null) {
       // Auth ile kullanıcı oluşturulduktan sonra user id'sini alıyoruz.
       String userId = userCredential.user!.uid;
-      
-      // Oluşturulan kullanıcı için Firestore'a kayıt yapılıyor.
+
       await _registerUser(userId: userId, name: name, email: email, password: password);
+      Fluttertoast.showToast(
+        msg: "Successfully registered",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Color.fromARGB(255, 1, 88, 24),
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   } on FirebaseAuthException catch (e) {
-    // Hata durumunda buraya düşebilirsiniz.
-    // Hata işlemlerini burada yapabilirsiniz.
+    Fluttertoast.showToast(
+      msg: "Something went wrong",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 }
+
 
   Future<void> signIn(BuildContext context, {required String email, required String password}) async {
   final navigator = Navigator.of(context);

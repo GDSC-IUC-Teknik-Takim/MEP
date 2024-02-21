@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mep/app/core/constants/color_constant.dart';
 import 'package:mep/app/core/enums/space.dart';
 import 'package:mep/app/views/profile/profile_text_field.dart';
-
 import '../home/home_view.dart';
 import '../report/my_reports/my_reports_page.dart';
 
@@ -24,12 +24,32 @@ class _ProfilePageState extends State<ProfilePage> {
   int _selectedIndex = 2; // ProfilePage için index
 
   @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _aboutController.dispose();
     super.dispose();
+  }
+
+  Future<void> _saveUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('fullname', _nameController.text);
+    await prefs.setString('email', _emailController.text);
+  }
+
+  Future<void> _loadUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _nameController.text = prefs.getString('fullName') ?? '';
+      _emailController.text = prefs.getString('email') ?? '';
+    });
   }
 
   @override
@@ -59,18 +79,17 @@ class _ProfilePageState extends State<ProfilePage> {
               Column(
                 children: [
                   Container(
-                    child:
-                    ProfileTextField(
+                    child: ProfileTextField(
                       controller: _nameController,
                       label: 'Ad Soyad',
                       isEditing: _isEditing,
                     ),
-                    height:50,
+                    height: 50,
                     width: 350,
                   ),
                   SpaceHeight.l.value,
                   Container(
-                    child:ProfileTextField(
+                    child: ProfileTextField(
                       controller: _emailController,
                       label: 'E-mail',
                       isEditing: _isEditing,
@@ -78,8 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: 350,),
                   SpaceHeight.l.value,
                   Container(
-                    child:
-                    ProfileTextField(
+                    child: ProfileTextField(
                       controller: _phoneController,
                       label: 'Telefon Numarası',
                       isEditing: _isEditing,
@@ -106,6 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       setState(() {
                         _isEditing = !_isEditing;
                       });
+                      _saveUserInfo();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstant.buttonColor,

@@ -62,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: _fullnameController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.account_box_outlined),
-                      labelText: 'Full name',
+                      labelText: 'Nickname',
                       border: OutlineInputBorder(
                         borderSide: BorderSide(style: BorderStyle.none),
                         borderRadius: BorderRadius.circular(12.0),
