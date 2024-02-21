@@ -4,13 +4,6 @@ import 'package:mep/app/views/home/home_view.dart';
 import 'package:mep/app/views/home/navigation_bar/navigation_bar.dart';
 import 'package:mep/app/views/auth/register/register_service.dart';
 
-void main() {
-  runApp(MaterialApp(
-    title: 'Login Demo',
-    home: LoginScreen(),
-  ));
-}
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 

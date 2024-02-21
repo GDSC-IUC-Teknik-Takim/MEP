@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mep/app/views/home/navigation_bar/navigation_bar.dart';
 import 'package:mep/app/views/report/create_report/create_report_view.dart';
 
-class HomePage extends StatelessWidget {
+import '../profile/profile_page.dart';
+import '../report/my_reports/my_reports_page.dart';
+
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return NavigationBarPage(
-      content: _HomePageContent(),
-    );
-  }
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageContent extends StatefulWidget {
-  const _HomePageContent({Key? key}) : super(key: key);
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 1; // yeni ekledim
 
-  @override
-  State<_HomePageContent> createState() => __HomePageContentState();
-}
-
-class __HomePageContentState extends State<_HomePageContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +23,6 @@ class __HomePageContentState extends State<_HomePageContent> {
       body: Center(
         child: Column(
           children: [
-            const Text("Home Page"),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -38,11 +30,52 @@ class __HomePageContentState extends State<_HomePageContent> {
                   MaterialPageRoute(builder: (context) => CreateReport()),
                 );
               },
-              child: const Text("Create Report"),
+              child: Text("Create Report"),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.article_outlined),
+            label: 'Reports',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color(0xFF325A3E),
+        unselectedItemColor: Colors.black,
+        onTap: _onItemTapped,
+      ),
     );
   }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    if (index == 0) {
+      // 'Reports' sayfasına yönlendirme yapılabilir
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyReportsPage()),
+      );
+    } else if (index == 2) {
+      // 'Profile' sayfasına yönlendirme yapılabilir
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    }
+  }
+
 }

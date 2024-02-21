@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mep/app/views/home/home_view.dart';
 import 'package:mep/app/views/profile/profile_page.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_page.dart';
-
-import 'package:flutter/material.dart';
+import 'package:mep/app/views/report/create_report/create_report_view.dart';
 
 class NavigationBarPage extends StatefulWidget {
-  final Widget content;
-
-  const NavigationBarPage({Key? key, required this.content}) : super(key: key);
+  const NavigationBarPage({Key? key}) : super(key: key);
 
   @override
   State<NavigationBarPage> createState() => _NavigationBarPageState();
@@ -20,7 +17,14 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.content,
+      appBar: AppBar(
+        title: _selectedIndex == 0
+            ? const Text("My Reports")
+            : _selectedIndex == 1
+            ? const Text("Home")
+            : const Text("Profile"),
+      ),
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
