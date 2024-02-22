@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mep/app/views/profile/profile_admin_page.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_admin_page.dart';
 
-
-
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({Key? key}) : super(key: key);
 
@@ -26,13 +24,14 @@ class _AdminHomePageState extends State<AdminHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 70.0, bottom: 8.0), // Yazının üstünde ve altında boşluk oluşturur
+                padding: const EdgeInsets.only(
+                    top: 50.0,
+                    bottom: 8.0), // Yazının üstünde ve altında boşluk oluşturur
                 child: Text(
                   "           Home",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20.0,
-
                   ),
                 ),
               ),
@@ -42,9 +41,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
       ),
       body: Center(
         child: Column(
-          children: [
-
-          ],
+          children: [],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
