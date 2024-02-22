@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mep/app/views/home/home_view.dart';
 import 'package:mep/app/views/home/navigation_bar/navigation_bar.dart';
+import '../my_reports/my_reports_page.dart';
+
 class ReportSuccesful extends StatelessWidget {
   const ReportSuccesful({super.key});
 
@@ -80,7 +82,11 @@ class ReportSuccesful extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyReportsPage()),
+                        );
                       },
                       child: Text('Continue'),
                     ),

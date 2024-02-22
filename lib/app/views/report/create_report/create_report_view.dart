@@ -3,15 +3,21 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
+import 'dart:io';
+import 'package:mep/app/data/models/report_model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 import 'dart:convert';
+
 import '../my_reports/my_reports_page.dart';
+import 'package:mep/app/views/report/create_report/report_succesful.dart';
 
 class CreateReport extends StatefulWidget {
   final String? adress;
   final LatLng? geopoint;
 
-  const CreateReport({Key? key, this.adress, this.geopoint}) : super(key: key);
+  const CreateReport({super.key, this.adress, this.geopoint});
 
   @override
   State<CreateReport> createState() => _CreateReportState();
@@ -41,11 +47,7 @@ class _CreateReportState extends State<CreateReport> {
     );
     if (result != null) {
       setState(() {
-        if (pickedImages != null) {
-          pickedImages!.addAll(result.files.map((file) => XFile(file.path!)));
-        } else {
-          pickedImages = result.files.map((file) => XFile(file.path!)).toList();
-        }
+        pickedImages = result.files.map((file) => XFile(file.path!)).toList();
       });
     }
   }
@@ -172,72 +174,30 @@ class _CreateReportState extends State<CreateReport> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  if (titleController.text.isEmpty ||
-                      locationController.text.isEmpty ||
-                      detailController.text.isEmpty ||
-                      pickedImages == null ||
-                      pickedImages!.isEmpty) {
-                    // Show a warning message if any required field is empty
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Warning"),
-                          content: Text(
-                              "Please fill in all of the report informations and select at least one image."),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text("OK"),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else {
-                    // All fields are filled, proceed with report creation
-                    await uploadImages();
-                    if (imageBase64Strings.isEmpty) {
-                      // Show a warning message if no images are selected
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Warning"),
-                            content: Text("Please select at least one image."),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("OK"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else {
-                      // Images are inserted, proceed with report creation
-                      final reportId = await completeReport(
-                        titleController.text,
-                        imageBase64Strings,
-                        detailController.text,
-                        selectedPollutionType,
-                        selectedMunicipality,
-                        locationController.text,
-                        widget.geopoint!.latitude,
-                        widget.geopoint!.longitude,
-                      );
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyReportsPage()));
-                      // Used Nreport as needed
-                    }
-                  }
+                  await uploadImages();
+                  final reportId = await completeReport(
+                    titleController.text,
+                    imageBase64Strings,
+                    detailController.text,
+                    selectedPollutionType,
+                    selectedMunicipality,
+                    locationController.text,
+                    widget.geopoint!.latitude,
+                    widget.geopoint!.longitude,
+                  );
+                  /*final Nreport = Report(
+                    id: reportId,
+                    reportTitle: titleController.text,
+                    imageBase64Strings: imageBase64Strings,
+                    status: 'Pending',
+                    reportDetail: detailController.text,
+                    reportType: selectedPollutionType,
+                    municipality: selectedMunicipality,
+                    date: DateTime.now().toString(),
+                  );*/
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ReportSuccesful()));
+                  // Used Nreport as needed
                 },
                 child: Text('Complete report'),
               ),
@@ -250,15 +210,15 @@ class _CreateReportState extends State<CreateReport> {
 }
 
 Future<String> completeReport(
-    String reportTitle,
-    List<String> imageBase64Strings,
-    String reportDetail,
-    String reportType,
-    String municipality,
-    String location,
-    double latitude,
-    double longitude,
-    ) async {
+  String reportTitle,
+  List<String> imageBase64Strings,
+  String reportDetail,
+  String reportType,
+  String municipality,
+  String location,
+  double latitude,
+  double longitude,
+) async {
   final docReport = FirebaseFirestore.instance.collection('report').doc();
   final json = {
     'reportTitle': reportTitle,
@@ -276,4 +236,3 @@ Future<String> completeReport(
 
   return docReport.id; // Return the ID of the newly created document
 }
-
