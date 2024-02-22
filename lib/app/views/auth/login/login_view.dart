@@ -44,50 +44,52 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    height: 200,
-                    width: 300,
-                    child: Image(
-                      image: AssetImage('assets/images/meplogo2.png'),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      height: 200,
+                      width: 300,
+                      child: Image(
+                        image: AssetImage('assets/images/meplogo2.png'),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 40),
-                  const Text(
-                    "Welcome to MEP",
-                    textScaleFactor: 2.5,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Sign in to your account",
-                    textScaleFactor: 1.0,
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  SizedBox(height: 50),
-                  Container(child: Usernamebox(emailController: emailController), width: 350),
-                  SizedBox(height: 20),
-                  Container(child: PasswordBar(passwordController: passwordController), width: 350),
-                  SizedBox(height: 40),
-                  Text("Forgot password?"),
-                  SizedBox(height: 40),
-                  LoginButton(
-                    emailController: emailController,
-                    passwordController: passwordController,
-                    authService: _authService,
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        // Navigate to signup screen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RegisterPage()), // RegisterScreen kullanıyoruz
-                        );
-                      },
-                      child: Text("Don't have an account ? Sign Up",
-                          style: TextStyle(color: Color.fromRGBO(50, 90, 62, 100)))),
-                ],
+                    const SizedBox(height: 40),
+                    const Text(
+                      "Welcome to MEP",
+                      textScaleFactor: 2.5,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Sign in to your account",
+                      textScaleFactor: 1.0,
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    SizedBox(height: 50),
+                    Container(child: Usernamebox(emailController: emailController), width: 350),
+                    SizedBox(height: 20),
+                    Container(child: PasswordBar(passwordController: passwordController), width: 350),
+                    SizedBox(height: 40),
+                    Text("Forgot password?"),
+                    SizedBox(height: 80),
+                    LoginButton(
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      authService: _authService,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          // Navigate to signup screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegisterPage()), // RegisterScreen kullanıyoruz
+                          );
+                        },
+                        child: Text("Don't have an account ? Sign Up",
+                            style: TextStyle(color: Color.fromRGBO(50, 90, 62, 100)))),
+                  ],
+                ),
               ),
             ),
           ],
