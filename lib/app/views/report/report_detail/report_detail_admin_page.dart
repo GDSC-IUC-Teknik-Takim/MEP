@@ -1,4 +1,4 @@
-/*import 'dart:convert';
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mep/app/core/enums/space.dart';
@@ -30,7 +30,7 @@ class _ReportDetailAdminPageState extends State<ReportDetailAdminPage> {
             child: _buildImageFromBase64(),
           ),
           SpaceHeight.l.value,
-          const Buttons(/*widget.report*/),
+          Buttons(report: widget.report),
           SpaceHeight.l.value,
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -59,7 +59,8 @@ class _ReportDetailAdminPageState extends State<ReportDetailAdminPage> {
     if (widget.report.imageBase64Strings.isNotEmpty) {
       final String base64String = widget.report.imageBase64Strings.first;
       final List<int> bytes = base64.decode(base64String);
-      final Uint8List uint8List = Uint8List.fromList(bytes); // Convert List<int> to Uint8List
+      final Uint8List uint8List =
+          Uint8List.fromList(bytes); // Convert List<int> to Uint8List
       return Image.memory(uint8List, fit: BoxFit.cover);
     } else {
       // Return a placeholder widget if no images are available
@@ -67,4 +68,3 @@ class _ReportDetailAdminPageState extends State<ReportDetailAdminPage> {
     }
   }
 }
-*/

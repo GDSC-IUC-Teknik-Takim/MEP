@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
       _markers.clear(); // Önceki marker'ları temizle
       _markers.add(
         Marker(
-          markerId: MarkerId(tappedPoint.toString()),
+          markerId: MarkerId(tappedPoint.latitude.toString()),
           position: tappedPoint,
           icon: BitmapDescriptor.defaultMarker,
         ),
@@ -155,7 +155,8 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CreateReport(adress: address),
+                  builder: (context) =>
+                      CreateReport(adress: address, geopoint: selectedLocation),
                 ),
               );
             }

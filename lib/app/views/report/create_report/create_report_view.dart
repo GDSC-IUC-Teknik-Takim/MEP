@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:mep/app/data/models/report_model.dart';
@@ -12,8 +13,9 @@ import '../my_reports/my_reports_page.dart';
 
 class CreateReport extends StatefulWidget {
   final String? adress;
+  final LatLng? geopoint;
 
-  const CreateReport({super.key, this.adress});
+  const CreateReport({super.key, this.adress, this.geopoint});
 
   @override
   State<CreateReport> createState() => _CreateReportState();
@@ -177,8 +179,11 @@ class _CreateReportState extends State<CreateReport> {
                     detailController.text,
                     selectedPollutionType,
                     selectedMunicipality,
+                    locationController.text,
+                    widget.geopoint!.latitude,
+                    widget.geopoint!.longitude,
                   );
-                  final Nreport = Report(
+                  /*final Nreport = Report(
                     id: reportId,
                     reportTitle: titleController.text,
                     imageBase64Strings: imageBase64Strings,
@@ -187,7 +192,7 @@ class _CreateReportState extends State<CreateReport> {
                     reportType: selectedPollutionType,
                     municipality: selectedMunicipality,
                     date: DateTime.now().toString(),
-                  );
+                  );*/
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MyReportsPage()));
                   // Used Nreport as needed
@@ -208,6 +213,9 @@ Future<String> completeReport(
   String reportDetail,
   String reportType,
   String municipality,
+  String location,
+  double latitude,
+  double longitude,
 ) async {
   final docReport = FirebaseFirestore.instance.collection('report').doc();
   final json = {
@@ -217,6 +225,9 @@ Future<String> completeReport(
     'reportDetail': reportDetail,
     'reportType': reportType,
     'municipality': municipality,
+    'location': location,
+    'latitude': latitude,
+    'longitude': longitude,
     'date': DateTime.now().toString(),
   };
   await docReport.set(json);

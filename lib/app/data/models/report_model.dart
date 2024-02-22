@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Report {
   final String id;
   final String reportTitle;
@@ -7,6 +9,8 @@ class Report {
   final String reportType;
   final String municipality;
   final String date;
+  final double latitude;
+  final double longitude;
 
   Report({
     required this.id,
@@ -17,6 +21,8 @@ class Report {
     required this.reportType,
     required this.municipality,
     required this.date,
+    required this.latitude,
+    required this.longitude,
   });
 
   static Report fromJson(String id, Map<String, dynamic> json) {
@@ -36,6 +42,13 @@ class Report {
       reportType: json['reportType'] ?? '',
       municipality: json['municipality'] ?? '',
       date: json['date'] ?? '',
+      latitude: json['latitude'] ?? '',
+      longitude: json['longitude'] ?? '',
     );
+  }
+
+  static Report fromSnapshot(DocumentSnapshot snapshot) {
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+    return Report.fromJson(snapshot.id, data);
   }
 }
