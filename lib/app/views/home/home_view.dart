@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mep/app/views/report/create_report/create_report_view.dart';
-
+import 'package:geocoding/geocoding.dart' as GeoLocation;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart' as DeviceLocation;
 import '../profile/profile_page.dart';
 import '../report/my_reports/my_reports_page.dart';
 
@@ -13,6 +15,92 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
+  GoogleMapController? _controller;
+  LatLng _initialCameraPosition = LatLng(37.7749, -122.4194);
+  Set<Marker> _markers = {};
+  DeviceLocation.Location _locationController = new DeviceLocation.Location();
+  LatLng? _currentP = null;
+  LatLng? selectedLocation;
+
+  Future<String> getAddressFromLatLng(LatLng location) async {
+    try {
+      List<GeoLocation.Placemark> placemarks =
+          await GeoLocation.placemarkFromCoordinates(
+              location.latitude, location.longitude);
+
+      if (placemarks != null && placemarks.isNotEmpty) {
+        GeoLocation.Placemark placemark = placemarks[0];
+        print(placemark);
+        return '${placemark.street}, ${placemark.subLocality}, ${placemark.locality},${placemark.subAdministrativeArea}, ${placemark.administrativeArea}, ${placemark.country}';
+      } else {
+        return "Adres Bulunamadı";
+      }
+    } catch (e) {
+      print("Hata: $e");
+      return "Bilinmeyen Adres";
+    }
+  }
+
+  Future<void> getLocationUpdates() async {
+    bool _serviceEnabled;
+    DeviceLocation.PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await _locationController.serviceEnabled();
+
+    if (_serviceEnabled) {
+      _serviceEnabled = await _locationController.requestService();
+      print(_serviceEnabled);
+    } else {
+      return;
+    }
+
+    _permissionGranted = await _locationController.hasPermission();
+    if (_permissionGranted == DeviceLocation.PermissionStatus.denied) {
+      _permissionGranted = await _locationController.requestPermission();
+      if (_permissionGranted != DeviceLocation.PermissionStatus.granted) {
+        return;
+      }
+      print(_permissionGranted);
+    }
+
+    _locationController.onLocationChanged
+        .listen((DeviceLocation.LocationData currentLocation) {
+      if (currentLocation.latitude != null &&
+          currentLocation.longitude != null) {
+        setState(() {
+          _currentP =
+              LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          print(_currentP);
+        });
+      }
+    });
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      _controller = controller;
+    });
+  }
+
+  void _onMapTapped(LatLng tappedPoint) {
+    setState(() {
+      selectedLocation = tappedPoint;
+      _markers.clear(); // Önceki marker'ları temizle
+      _markers.add(
+        Marker(
+          markerId: MarkerId(tappedPoint.toString()),
+          position: tappedPoint,
+          icon: BitmapDescriptor.defaultMarker,
+        ),
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getLocationUpdates();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +114,14 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 70.0, bottom: 8.0), // Yazının üstünde ve altında boşluk oluşturur
+                padding: const EdgeInsets.only(
+                    top: 50.0,
+                    bottom: 8.0), // Yazının üstünde ve altında boşluk oluşturur
                 child: Text(
                   "           Home",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20.0,
-
                   ),
                 ),
               ),
@@ -40,21 +129,41 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateReport()),
-                );
-              },
-              child: Text("Create Report"),
+      body: _currentP == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : GoogleMap(
+              mapType: MapType.normal,
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _currentP!,
+                zoom: 12,
+              ),
+              onTap: _onMapTapped,
+              markers: _markers,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
             ),
-          ],
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 60.0),
+        child: ElevatedButton(
+          onPressed: () async {
+            // Seçilen konumu diğer sayfaya aktar
+            if (selectedLocation != null) {
+              String address = await getAddressFromLatLng(selectedLocation!);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CreateReport(adress: address),
+                ),
+              );
+            }
+          },
+          child: Text("Create a Report"),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

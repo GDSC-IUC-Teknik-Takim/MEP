@@ -11,6 +11,10 @@ import 'dart:convert';
 import '../my_reports/my_reports_page.dart';
 
 class CreateReport extends StatefulWidget {
+  final String? adress;
+
+  const CreateReport({super.key, this.adress});
+
   @override
   State<CreateReport> createState() => _CreateReportState();
 }
@@ -48,11 +52,27 @@ class _CreateReportState extends State<CreateReport> {
   TextEditingController locationController = TextEditingController();
   TextEditingController detailController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    locationController = TextEditingController(text: widget.adress);
+  }
+
   String selectedPollutionType = 'Select pollution type';
   String selectedMunicipality = 'Select Municipality';
 
-  final List<String> pollutionTypes = ['Air Pollution', 'Water Pollution', 'Land Pollution','Select pollution type'];
-  final List<String> municipalities = ['Kadıköy', 'Avcılar', 'Küçükçekmece','Select Municipality'];
+  final List<String> pollutionTypes = [
+    'Air Pollution',
+    'Water Pollution',
+    'Land Pollution',
+    'Select pollution type'
+  ];
+  final List<String> municipalities = [
+    'Kadıköy',
+    'Avcılar',
+    'Küçükçekmece',
+    'Select Municipality'
+  ];
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -61,12 +81,11 @@ class _CreateReportState extends State<CreateReport> {
     detailController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("Create a report")
-      ),
+      appBar: AppBar(title: Text("Create a report")),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -119,7 +138,9 @@ class _CreateReportState extends State<CreateReport> {
                   prefixIcon: Icon(Icons.eco_outlined),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: locationController,
                 decoration: InputDecoration(
@@ -127,7 +148,9 @@ class _CreateReportState extends State<CreateReport> {
                   labelText: 'Location',
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: detailController,
                 decoration: InputDecoration(
@@ -135,18 +158,16 @@ class _CreateReportState extends State<CreateReport> {
                   labelText: 'Details',
                 ),
               ),
-
               SizedBox(height: 40.0),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: selectImages,
-                      child: Text("Select image(s)"),
-                    )
-                  ]
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                ElevatedButton(
+                  onPressed: selectImages,
+                  child: Text("Select image(s)"),
+                )
+              ]),
+              SizedBox(
+                height: 20,
               ),
-              SizedBox(height:20,),
               ElevatedButton(
                 onPressed: () async {
                   await uploadImages();
@@ -167,12 +188,8 @@ class _CreateReportState extends State<CreateReport> {
                     municipality: selectedMunicipality,
                     date: DateTime.now().toString(),
                   );
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MyReportsPage()
-                      )
-                  );
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyReportsPage()));
                   // Used Nreport as needed
                 },
                 child: Text('Complete report'),
@@ -186,12 +203,12 @@ class _CreateReportState extends State<CreateReport> {
 }
 
 Future<String> completeReport(
-    String reportTitle,
-    List<String> imageBase64Strings,
-    String reportDetail,
-    String reportType,
-    String municipality,
-    ) async {
+  String reportTitle,
+  List<String> imageBase64Strings,
+  String reportDetail,
+  String reportType,
+  String municipality,
+) async {
   final docReport = FirebaseFirestore.instance.collection('report').doc();
   final json = {
     'reportTitle': reportTitle,
