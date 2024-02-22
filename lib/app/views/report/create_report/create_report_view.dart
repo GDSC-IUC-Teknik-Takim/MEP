@@ -89,7 +89,7 @@ class _CreateReportState extends State<CreateReport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create a report")),
+      appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -167,12 +167,24 @@ class _CreateReportState extends State<CreateReport> {
                 ElevatedButton(
                   onPressed: selectImages,
                   child: Text("Select image(s)"),
+                  style: ElevatedButton.styleFrom(
+                    onPrimary: Colors.white,
+                    primary: Color(
+                        0xFF325A3E),
+                        padding: EdgeInsets.symmetric(horizontal: 65), 
+                  ),
                 )
               ]),
               SizedBox(
                 height: 20,
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white,
+                  primary:
+                      Color(0xFF325A3E),
+                      padding: EdgeInsets.symmetric(horizontal: 65), 
+                ),
                 onPressed: () async {
                   await uploadImages();
                   final reportId = await completeReport(
@@ -195,8 +207,10 @@ class _CreateReportState extends State<CreateReport> {
                     municipality: selectedMunicipality,
                     date: DateTime.now().toString(),
                   );*/
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ReportSuccesful()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReportSuccesful()));
                   // Used Nreport as needed
                 },
                 child: Text('Complete report'),

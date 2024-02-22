@@ -28,6 +28,20 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
   int _selectedIndex = 2; // ProfilePage için index
 
   @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _nameController.text = prefs.getString('fullName') ?? '';
+      _emailController.text = prefs.getString('email') ?? '';
+    });
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
@@ -66,7 +80,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
             children: [
               const CircleAvatar(
                 radius: 90,
-                backgroundImage: AssetImage('assets/images/glogo2.png'),
+                backgroundImage: AssetImage('assets/images/corporate.png'),
               ),
               SizedBox(height: 20,),
               SpaceHeight.xl.value,
@@ -76,7 +90,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                     child:
                     ProfileTextField(
                       controller: _nameController,
-                      label: 'Ad Soyad',
+                      label: 'Nickname',
                       isEditing: _isEditing,
                     ),
                     height:50,
