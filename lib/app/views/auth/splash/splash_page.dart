@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
       // 3 saniye sonra ana ekrana yönlendirme işlemini gerçekleştir
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const RegisterPage()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     });
   }
@@ -33,7 +33,7 @@ class _SplashPageState extends State<SplashPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/meplogo1-removebg-preview.png'),
+            Image.asset('assets/images/meplogo2.png'),
             const SizedBox(height: 20),
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:mep/app/core/constants/color_constant.dart';
 import 'package:mep/app/core/enums/space.dart';
 import 'package:mep/app/views/profile/profile_text_field.dart';
 import '../home/home_view.dart';
+import 'package:mep/app/views/auth/login/login_view.dart';
 import '../report/my_reports/my_reports_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -59,8 +60,17 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text('Profile'),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings),
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              await prefs.clear();
+
+              // Veriler temizlendikten sonra login sayfasına yönlendirme işlemi
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+            icon: const Icon(Icons.exit_to_app),
           ),
         ],
       ),
@@ -72,16 +82,18 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               const CircleAvatar(
                 radius: 90,
-                backgroundImage: AssetImage('assets/images/profile_image.png'),
+                backgroundImage: AssetImage('assets/images/glogo2.png'),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               SpaceHeight.xl.value,
               Column(
                 children: [
                   Container(
                     child: ProfileTextField(
                       controller: _nameController,
-                      label: 'Ad Soyad',
+                      label: 'Nickname',
                       isEditing: _isEditing,
                     ),
                     height: 50,
@@ -93,59 +105,25 @@ class _ProfilePageState extends State<ProfilePage> {
                       controller: _emailController,
                       label: 'E-mail',
                       isEditing: _isEditing,
-                    ), height: 50,
-                    width: 350,),
-                  SpaceHeight.l.value,
-                  Container(
-                    child: ProfileTextField(
-                      controller: _phoneController,
-                      label: 'Telefon Numarası',
-                      isEditing: _isEditing,
-                    ),height: 50,
-                    width: 350,),
-                  SpaceHeight.l.value,
-                  Container(
-                    width: 350,
+                    ),
                     height: 50,
-                    child:ProfileTextField(
-                      controller: _aboutController,
-                      label: 'Hakkında',
-                      isEditing: _isEditing,
-                    ),)
+                    width: 350,
+                  ),
+                  SpaceHeight.l.value,
+                  
+                  SpaceHeight.l.value,
+                 
                 ],
               ),
               SpaceHeight.xl.value,
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isEditing = !_isEditing;
-                      });
-                      _saveUserInfo();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstant.buttonColor,
-                    ),
-                    child: Text(
-                      _isEditing ? 'Düzenlemeyi Bitir' : 'Düzenle',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Örnek: saveProfile();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstant.buttonColor,
-                    ),
-                    child: const Text(
-                      'Kaydet',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+                
+       
                 ],
               ),
             ],
@@ -194,5 +172,4 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
   }
-
 }

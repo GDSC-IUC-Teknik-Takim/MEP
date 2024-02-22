@@ -39,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(),
+      
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(20.0),
@@ -48,6 +48,15 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Container(
+                    height: 200,
+                    width: 300,
+                    child: Image(
+                      image: AssetImage('assets/images/meplogo2.png'),
+                    ),
+                  ),
+
+                  
                   Text(
                     "Sign Up",
                     textScaleFactor: 2.5,

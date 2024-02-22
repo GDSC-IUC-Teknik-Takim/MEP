@@ -38,15 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: 70.0), // Padding on top
-                    Text(
-                      "             Sign in to your account",
-                      textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    SizedBox(height: 40.0), // Padding between text and form fields
-                  ],
+            
                 ),
               ),
             ),
@@ -56,10 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    height: 100,
+                    height: 200,
                     width: 300,
                     child: Image(
-                      image: AssetImage('assets/images/meplogo1-removebg-preview.png'),
+                      image: AssetImage('assets/images/meplogo2.png'),
                     ),
                   ),
                   const SizedBox(height: 40),

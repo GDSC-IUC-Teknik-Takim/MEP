@@ -7,12 +7,53 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mep/app/views/home/admin_home_view.dart';
 import 'package:mep/app/views/home/home_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mep/app/views/home/home_view.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_admin_page.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_page.dart';
 
 class AuthService {
   final userCollection = FirebaseFirestore.instance.collection("users");
   final firebaseAuth = FirebaseAuth.instance;
+
+
+
+
+
+ Future<void> updateUserInformation(String newName, String newEmail) async {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? user = auth.currentUser;
+
+  if (user != null) {
+    try {
+      // Auth'daki e-postayı güncelle
+      await user.updateEmail(newEmail);
+
+      // Kullanıcının isim ve e-posta bilgisini güncelle
+      await user.updateDisplayName(newName);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? uid = prefs.getString('userId');
+
+      // Firestore kullanarak kullanıcının bilgilerini güncelle
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentReference userDocRef = firestore.collection('users').doc(user.uid);
+
+      await userDocRef.update({
+        'name': newName,
+        'email': newEmail,
+      });
+
+      print('Kullanıcı bilgileri başarıyla güncellendi!');
+    } catch (e) {
+      print('Kullanıcı bilgileri güncellenirken bir hata oluştu: $e');
+    }
+  }
+}
+
+
+
+
+
 
 
  Future<void> signUp(BuildContext context, {required String name, required String email, required String password}) async {
@@ -41,6 +82,10 @@ class AuthService {
       );
       return;
     }
+
+   
+
+
 
     final UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
     if (userCredential.user != null) {
