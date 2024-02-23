@@ -10,15 +10,15 @@ import '../my_reports/my_reports_page.dart';
 
 
 
-class Buttons extends StatefulWidget {
-  const Buttons({super.key,required this.report});
+class AdminButtons extends StatefulWidget {
+  const AdminButtons({super.key,required this.report});
   final Report report;
 
   @override
-  State<Buttons> createState() => _ButtonsState();
+  State<AdminButtons> createState() => _ButtonsState();
 }
 
-class _ButtonsState extends State<Buttons> {
+class _ButtonsState extends State<AdminButtons> {
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _ButtonsState extends State<Buttons> {
           onPressed: ()
           {
             final docUser = FirebaseFirestore
-           .instance.collection('report').doc(widget.report.id);
+                .instance.collection('report').doc(widget.report.id);
             docUser.delete();
             Navigator.push(
               context,
@@ -50,10 +50,10 @@ class _ButtonsState extends State<Buttons> {
         ),
         SpaceWidth.m.value,
         Button(
-          onPressed: ()
-          {
-
+          onPressed: () {
+            print('Edit button pressed');
           },
+
           iconData: Icons.edit,
         ),
         SpaceWidth.m.value,
@@ -73,11 +73,11 @@ class _ButtonsState extends State<Buttons> {
 
   Future <void> _openmap(String Latitude,String Longtitude)
   async {
-     String googleURL=
-         'https://www.google.com/maps/search/?api=1&query=$Latitude,$Longtitude';
-     await canLaunchUrlString(googleURL)
-      ? await launchUrlString(googleURL)
-      : throw 'Could not reach the location';
+    String googleURL=
+        'https://www.google.com/maps/search/?api=1&query=$Latitude,$Longtitude';
+    await canLaunchUrlString(googleURL)
+        ? await launchUrlString(googleURL)
+        : throw 'Could not reach the location';
 
   }
 }
@@ -99,9 +99,9 @@ class Button extends StatelessWidget {
       onPressed: onPressed,
       child: Center(
           child: Icon(
-        color: Colors.black,
-        iconData,
-      )),
+            color: Colors.black,
+            iconData,
+          )),
     );
   }
 }

@@ -160,6 +160,37 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
+            else
+            {
+              print('locationyok');
+              showDialog(context: context,
+                  builder: (BuildContext context)
+                  {
+                    return Center(
+                      child: AlertDialog(
+                        title: Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Warning"),
+                          ],
+                        ),
+                        content: Text("Location must be selected on map"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Row(mainAxisAlignment:MainAxisAlignment.center ,
+                              children: [
+                                Text("OK"),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+              );
+            }
           },
           child: Text("Create a Report"),
         ),

@@ -4,7 +4,7 @@ class Report {
   final String id;
   final String reportTitle;
   final List<String> imageBase64Strings;
-  final String status;
+  String status;
   final String reportDetail;
   final String reportType;
   final String municipality;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import '../my_reports/my_reports_page.dart';
 
@@ -263,14 +264,14 @@ Future<String> completeReport(
   final json = {
     'reportTitle': reportTitle,
     'imageBase64Strings': imageBase64Strings,
-    'status': 'pending',
+    'status': 'We have received',
     'reportDetail': reportDetail,
     'reportType': reportType,
     'municipality': municipality,
     'location': location,
     'latitude': latitude,
     'longitude': longitude,
-    'date': DateTime.now().toString(),
+    'date': DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
   };
   await docReport.set(json);
 

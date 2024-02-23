@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:mep/app/core/enums/space.dart';
 import 'package:mep/app/data/models/report_model.dart';
+import 'package:mep/app/views/report/report_detail/admin_buttons.dart';
 import 'package:mep/app/views/report/report_detail/buttons.dart';
 
 class ReportDetailAdminPage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _ReportDetailAdminPageState extends State<ReportDetailAdminPage> {
             child: _buildImageFromBase64(),
           ),
           SpaceHeight.l.value,
-          Buttons(report: widget.report),
+          AdminButtons(report: widget.report),
           SpaceHeight.l.value,
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
