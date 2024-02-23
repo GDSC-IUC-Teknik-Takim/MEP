@@ -18,7 +18,7 @@ class MyReportsAdminPage extends StatefulWidget {
 
 class _MyReportsAdminPageState extends State<MyReportsAdminPage> {
   int _selectedIndex = 0;
-  late String _userName;
+  String _userName = ''; // Initialize with a default value
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _MyReportsAdminPageState extends State<MyReportsAdminPage> {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
       if (userDoc.exists) {
         setState(() {
-          _userName = userDoc['name']; // Assuming the field in Firestore is 'name'
+          _userName = userDoc['name']; // Update _userName with fetched value
         });
       }
     }
