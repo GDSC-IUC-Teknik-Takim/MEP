@@ -11,27 +11,26 @@ import '../my_reports/my_reports_page.dart';
 
 
 class AdminButtons extends StatefulWidget {
-  const AdminButtons({super.key,required this.report});
+  const AdminButtons({Key? key, required this.report}) : super(key: key);
+
   final Report report;
 
   @override
-  State<AdminButtons> createState() => _ButtonsState();
+  _AdminButtonsState createState() => _AdminButtonsState();
 }
 
-class _ButtonsState extends State<AdminButtons> {
-
+class _AdminButtonsState extends State<AdminButtons> {
   @override
   Widget build(BuildContext context) {
+    print('AdminButtons rebuild');
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Button(
-          onPressed: ()
-          {
-            final docUser = FirebaseFirestore
-                .instance.collection('report').doc(widget.report.id);
-            docUser.delete();
+          onPressed: () async {
+            final docUser = FirebaseFirestore.instance.collection('report').doc(widget.report.id);
+            await docUser.delete();
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MyReportsPage()),
@@ -42,27 +41,34 @@ class _ButtonsState extends State<AdminButtons> {
         SpaceWidth.m.value,
         Button(
           onPressed: () {
-            Share.share( "I've just reported an environmental issue via MEP app here is the probleme scene: https://www.google.com/maps/search/?api=1&query=${widget.report.latitude.toString()},${widget.report.longitude.toString()}",);
-
-
+            Share.share("I've just reported an environmental issue via MEP app here is the problem scene: https://www.google.com/maps/search/?api=1&query=${widget.report.latitude.toString()},${widget.report.longitude.toString()}");
           },
           iconData: Icons.share,
         ),
         SpaceWidth.m.value,
         Button(
           onPressed: () {
-            print('Edit button pressed');
-          },
+            setState(() {
+              if (widget.report.status == 'We have received') {
+                widget.report.status = 'We are addressing';
+              } else if (widget.report.status == 'We are addressing') {
+                widget.report.status = 'We are unable to resolve due to technical difficulties.';
+              } else if (widget.report.status == 'We are unable to resolve due to technical difficulties.') {
+                widget.report.status = 'Resolved';
+              } else if (widget.report.status == 'Resolved') {
+                widget.report.status = 'We have received';
+              }
+            });
 
+            final docUser = FirebaseFirestore.instance.collection('report').doc(widget.report.id);
+            docUser.update({'status': widget.report.status});
+          },
           iconData: Icons.edit,
         ),
         SpaceWidth.m.value,
         Button(
-          onPressed: ()
-          {
-            _openmap(
-                widget.report.latitude.toString()
-                ,widget.report.longitude.toString());
+          onPressed: () {
+            _openmap(widget.report.latitude.toString(), widget.report.longitude.toString());
           },
           iconData: Icons.location_on_outlined,
         ),
@@ -71,37 +77,31 @@ class _ButtonsState extends State<AdminButtons> {
     );
   }
 
-  Future <void> _openmap(String Latitude,String Longtitude)
-  async {
-    String googleURL=
-        'https://www.google.com/maps/search/?api=1&query=$Latitude,$Longtitude';
-    await canLaunchUrlString(googleURL)
-        ? await launchUrlString(googleURL)
-        : throw 'Could not reach the location';
-
+  Future<void> _openmap(String latitude, String longitude) async {
+    final googleURL = 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+    await canLaunchUrlString(googleURL) ? await launchUrlString(googleURL) : throw 'Could not reach the location';
   }
 }
 
 class Button extends StatelessWidget {
   final Function()? onPressed;
   final IconData iconData;
-  const Button({
-    super.key,
-    required this.onPressed,
-    required this.iconData,
-  });
+
+  const Button({Key? key, required this.onPressed, required this.iconData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: ColorConstant.backgroundColor),
+        backgroundColor: ColorConstant.backgroundColor,
+      ),
       onPressed: onPressed,
       child: Center(
-          child: Icon(
-            color: Colors.black,
-            iconData,
-          )),
+        child: Icon(
+          color: Colors.black,
+          iconData,
+        ),
+      ),
     );
   }
 }

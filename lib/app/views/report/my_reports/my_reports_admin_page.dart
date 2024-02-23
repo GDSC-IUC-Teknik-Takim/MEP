@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mep/app/views/home/admin_home_view.dart';
+import 'package:mep/app/views/report/my_reports/admin_report_card.dart';
 import 'package:mep/app/views/report/my_reports/report_card.dart';
 import '../../../data/models/report_model.dart';
 
@@ -70,7 +71,7 @@ class _MyReportsAdminPageState extends State<MyReportsAdminPage> {
             if (reports.isEmpty) {
               return Center(child: Text('No reports available.'));
             } else {
-              return ReportCard(reports: reports);
+              return AdminReportCard(reports: reports);
             }
           }
         },
