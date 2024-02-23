@@ -105,30 +105,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 50.0,
-                    bottom: 8.0), // Yazının üstünde ve altında boşluk oluşturur
-                child: Text(
-                  "           Home",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
       body: _currentP == null
           ? Center(
               child: CircularProgressIndicator(),
@@ -157,6 +133,13 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(
                   builder: (context) =>
                       CreateReport(adress: address, geopoint: selectedLocation),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Please select a location'),
+                  duration: Duration(seconds: 2),
                 ),
               );
             }
@@ -192,6 +175,11 @@ class _HomePageState extends State<HomePage> {
               );
             }
           },
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 65),
+            onPrimary: Colors.white,
+            primary: Color(0xFF325A3E), // Arka plan rengi burada belirleniyor
+          ),
           child: Text("Create a Report"),
         ),
       ),

@@ -4,6 +4,8 @@ import 'package:mep/app/core/enums/space.dart';
 import 'package:mep/app/views/home/admin_home_view.dart';
 import 'package:mep/app/views/profile/profile_text_field.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_admin_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mep/app/views/auth/login/login_view.dart';
 
 import '../home/home_view.dart';
 import '../report/my_reports/my_reports_page.dart';
@@ -26,6 +28,20 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
   int _selectedIndex = 2; // ProfilePage için index
 
   @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _nameController.text = prefs.getString('fullName') ?? '';
+      _emailController.text = prefs.getString('email') ?? '';
+    });
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
@@ -41,10 +57,20 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
         title: const Text('Profile'),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings),
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              await prefs.clear();
+
+              // Veriler temizlendikten sonra login sayfasına yönlendirme işlemi
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+            icon: const Icon(Icons.exit_to_app),
           ),
         ],
+        
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -54,7 +80,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
             children: [
               const CircleAvatar(
                 radius: 90,
-                backgroundImage: AssetImage('assets/images/profile_image.png'),
+                backgroundImage: AssetImage('assets/images/corporate.png'),
               ),
               SizedBox(height: 20,),
               SpaceHeight.xl.value,
@@ -64,7 +90,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                     child:
                     ProfileTextField(
                       controller: _nameController,
-                      label: 'Ad Soyad',
+                      label: 'Nickname',
                       isEditing: _isEditing,
                     ),
                     height:50,
@@ -78,24 +104,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                       isEditing: _isEditing,
                     ), height: 50,
                     width: 350,),
-                  SpaceHeight.l.value,
-                  Container(
-                    child:
-                    ProfileTextField(
-                      controller: _phoneController,
-                      label: 'Telefon Numarası',
-                      isEditing: _isEditing,
-                    ),height: 50,
-                    width: 350,),
-                  SpaceHeight.l.value,
-                  Container(
-                    width: 350,
-                    height: 50,
-                    child:ProfileTextField(
-                      controller: _aboutController,
-                      label: 'Hakkında',
-                      isEditing: _isEditing,
-                    ),)
+   
                 ],
               ),
               SpaceHeight.xl.value,
@@ -103,32 +112,8 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isEditing = !_isEditing;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstant.buttonColor,
-                    ),
-                    child: Text(
-                      _isEditing ? 'Düzenlemeyi Bitir' : 'Düzenle',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Örnek: saveProfile();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstant.buttonColor,
-                    ),
-                    child: const Text(
-                      'Kaydet',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+                  
+                  
                 ],
               ),
             ],

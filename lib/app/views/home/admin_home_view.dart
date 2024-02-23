@@ -105,30 +105,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 50.0,
-                    bottom: 8.0), // Yazının üstünde ve altında boşluk oluşturur
-                child: Text(
-                  "           Home",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+  
       body: _currentP == null
           ? Center(
               child: CircularProgressIndicator(),
