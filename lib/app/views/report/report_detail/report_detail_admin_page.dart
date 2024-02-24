@@ -80,18 +80,33 @@ class _ReportDetailAdminPageState extends State<ReportDetailAdminPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      "Details: ${widget.report.reportDetail}",
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
+                  Center(
+  child: Container(
+    margin: EdgeInsets.all(20.0),
+    decoration: BoxDecoration(
+      color: Color(0xFFE1ECEA), // Arkaplan rengi #e1ecea
+      borderRadius: BorderRadius.circular(10.0),
+      border: Border.all(
+        color: Colors.white, // Border rengi beyaz yapılıyor
+        width: 1.0,
+      ),
+    ),
+    child: Container(
+      margin: EdgeInsets.all(15.0),
+      child: Text(
+        "Status: ${widget.report.status}",
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 16),
+      ),
+    ),
+  ),
+),
                   SpaceHeight.l.value,
                   Text(
-                    "Current Status: ${widget.report.status}",
-                    style: const TextStyle(fontSize: 16),
-                  ),
+  "${widget.report.reportDetail}",
+  style: const TextStyle(fontSize: 16),
+  textAlign: TextAlign.center, // Metni ortalama
+),
                 ],
               ),
             ],

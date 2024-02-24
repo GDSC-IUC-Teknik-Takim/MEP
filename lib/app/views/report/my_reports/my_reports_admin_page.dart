@@ -45,7 +45,7 @@ class _MyReportsAdminPageState extends State<MyReportsAdminPage> {
       appBar: AppBar(
         automaticallyImplyLeading: true, // Geri butonunu kaldırır
         title: Center(
-          child: Text("reports sent to you"),
+          child: Text("Reports sent to you"),
         ),
         actions: [
           IconButton(

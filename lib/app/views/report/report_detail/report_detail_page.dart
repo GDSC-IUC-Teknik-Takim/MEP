@@ -45,18 +45,20 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-  margin: EdgeInsets.all(15.0), // Her kenara 15 birimlik margin
-  child: Container(
-    height: 260,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(12.0), // İstenen kenarlık yarıçapı
-    ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(12.0), // Aynı yarıçapı burada da belirtiyoruz
-      child: _buildImageFromBase64(),
-    ),
-  ),
-),
+            margin: EdgeInsets.all(15.0), // Her kenara 15 birimlik margin
+            child: Container(
+              height: 260,
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(12.0), // İstenen kenarlık yarıçapı
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                    12.0), // Aynı yarıçapı burada da belirtiyoruz
+                child: _buildImageFromBase64(),
+              ),
+            ),
+          ),
           SpaceHeight.l.value,
           Center(
             child: Row(
@@ -67,22 +69,44 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
             ),
           ),
           SpaceHeight.l.value,
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(
-                  "Details: ${_currentReport.reportDetail}",
-                  style: const TextStyle(fontSize: 16),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+  child: Container(
+    margin: EdgeInsets.all(20.0),
+    decoration: BoxDecoration(
+      color: Color(0xFFE1ECEA), // Arkaplan rengi #e1ecea
+      borderRadius: BorderRadius.circular(10.0),
+      border: Border.all(
+        color: Colors.white, // Border rengi beyaz yapılıyor
+        width: 1.0,
+      ),
+    ),
+    child: Container(
+      margin: EdgeInsets.all(15.0),
+      child: Text(
+        "Status: ${_currentReport.status}",
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 16),
+      ),
+    ),
+  ),
+),
+
+
+                SpaceHeight.l.value,
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+  "${_currentReport.reportDetail}",
+  style: const TextStyle(fontSize: 16),
+  textAlign: TextAlign.center, // Metni ortalama
+),
                 ),
-              ),
-              SpaceHeight.l.value,
-              Text(
-                "Current Status: ${_currentReport.status}",
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -102,7 +126,8 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
 
       // Eğer belge varsa, 'status' alanını alıp print et
       if (snapshot.exists) {
-        var data = snapshot.data() as Map<String, dynamic>?; // Cast to Map<String, dynamic>
+        var data = snapshot.data()
+            as Map<String, dynamic>?; // Cast to Map<String, dynamic>
         if (data != null) {
           var status = data['status'];
           print('Status: $status');

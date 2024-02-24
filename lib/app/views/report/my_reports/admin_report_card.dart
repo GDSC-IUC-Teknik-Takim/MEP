@@ -20,52 +20,55 @@ class AdminReportCard extends StatefulWidget {
 class _AdminReportCardState extends State<AdminReportCard> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: widget.reports.length,
-      itemBuilder: (context, index) {
-        final report = widget.reports[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ReportDetailAdminPage(report: report),
-              ),
-            );
-            // Handle onTap as needed
-          },
-          child: Card(
-            color: Colors.white, // Adjust color as needed
-            child: Column(
-              children: [
-                // Displaying the first image from the list of base64-encoded images
-                _buildImageFromBase64(report.imageBase64Strings.first),
-                ListTile(
-                  title: Text(report.reportTitle),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.date_range),
-                          Text(report.date),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.location_city),
-                          Text(report.municipality),
-                        ],
-                      ),
-                    ],
-                  ),
-                  trailing: const Icon(Icons.warning),
+    return Padding(
+      padding: EdgeInsets.all(15.0), // Padding of 15 units on all sides
+      child: ListView.builder(
+        itemCount: widget.reports.length,
+        itemBuilder: (context, index) {
+          final report = widget.reports[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReportDetailAdminPage(report: report),
                 ),
-              ],
+              );
+              // Handle onTap as needed
+            },
+            child: Card(
+              color: Colors.white, // Adjust color as needed
+              child: Column(
+                children: [
+                  // Displaying the first image from the list of base64-encoded images
+                  _buildImageFromBase64(report.imageBase64Strings.first),
+                  ListTile(
+                    title: Text(report.reportTitle),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.date_range),
+                            Text(report.date),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.location_city),
+                            Text(report.municipality),
+                          ],
+                        ),
+                      ],
+                    ),
+                    trailing: const Icon(Icons.warning),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
