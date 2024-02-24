@@ -9,48 +9,94 @@ import 'package:mep/app/views/report/report_detail/buttons.dart';
 class ReportDetailAdminPage extends StatefulWidget {
   final Report report;
 
-  const ReportDetailAdminPage({super.key, required this.report});
+  const ReportDetailAdminPage({Key? key, required this.report})
+      : super(key: key);
 
   @override
   State<ReportDetailAdminPage> createState() => _ReportDetailAdminPageState();
 }
 
 class _ReportDetailAdminPageState extends State<ReportDetailAdminPage> {
+  bool _isRefreshing = false;
+
+  Future<void> _refreshPage() async {
+    setState(() {
+      _isRefreshing = true;
+    });
+
+    // Simulate some data fetching process
+    await Future.delayed(Duration(seconds: 1));
+
+    setState(() {
+      _isRefreshing = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.report.reportTitle),
         centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            width: 330,
-            height: 260,
-            child: _buildImageFromBase64(),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _isRefreshing ? null : _refreshPage,
           ),
-          SpaceHeight.l.value,
-          AdminButtons(report: widget.report),
-          SpaceHeight.l.value,
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: _refreshPage,
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(
-                  "Details: ${widget.report.reportDetail}",
-                  style: const TextStyle(fontSize: 16),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal:
+                        15.0), // Sağ ve sol kenarlara 15 birimlik margin
+                child: Container(
+                  height: 260,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        12.0), // İstenen kenarlık yarıçapı
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        12.0), // Aynı yarıçapı burada da belirtiyoruz
+                    child: _buildImageFromBase64(),
+                  ),
                 ),
               ),
               SpaceHeight.l.value,
-              Text(
-                "Current Status: ${widget.report.status}",
-                style: const TextStyle(fontSize: 16),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AdminButtons(report: widget.report),
+                  ],
+                ),
+              ),
+              SpaceHeight.l.value,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      "Details: ${widget.report.reportDetail}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  SpaceHeight.l.value,
+                  Text(
+                    "Current Status: ${widget.report.status}",
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

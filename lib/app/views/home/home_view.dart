@@ -105,30 +105,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 50.0,
-                    bottom: 8.0), // Yazının üstünde ve altında boşluk oluşturur
-                child: Text(
-                  "           Home",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
       body: _currentP == null
           ? Center(
               child: CircularProgressIndicator(),
@@ -148,52 +124,58 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 60.0),
         child: ElevatedButton(
-          onPressed: () async {
-            // Seçilen konumu diğer sayfaya aktar
-            if (selectedLocation != null) {
-              String address = await getAddressFromLatLng(selectedLocation!);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      CreateReport(adress: address, geopoint: selectedLocation),
-                ),
-              );
-            }
-            else
-            {
-
-              showDialog(context: context,
-                  builder: (BuildContext context)
-                  {
-                    return Center(
-                      child: AlertDialog(
-                        title: Row(mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Warning"),
-                          ],
-                        ),
-                        content: Text("Location must be selected on map"),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Row(mainAxisAlignment:MainAxisAlignment.center ,
-                              children: [
-                                Text("OK"),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-              );
-            }
-          },
-          child: Text("Create a Report"),
+  onPressed: () async {
+    // Seçilen konumu diğer sayfaya aktar
+    if (selectedLocation != null) {
+      String address = await getAddressFromLatLng(selectedLocation!);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              CreateReport(adress: address, geopoint: selectedLocation),
         ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Warning"),
+                ],
+              ),
+              content: Text("Location must be selected on map"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("OK"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  },
+  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF325A3E), // Arka plan rengi
+                    onPrimary: Colors.white, // Yazı rengi
+                    minimumSize: Size(200, 35), // Genişlik ve yükseklik
+                  ),
+                  child: Text("Create a report"),
+),
+
+        
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(

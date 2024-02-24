@@ -28,34 +28,37 @@ class ReportCard extends StatelessWidget {
             );
             // Handle onTap as needed
           },
-          child: Card(
-            color: Colors.white, // Adjust color as needed
-            child: Column(
-              children: [
-                // Displaying the first image from the list of base64-encoded images
-                _buildImageFromBase64(report.imageBase64Strings.first),
-                ListTile(
-                  title: Text(report.reportTitle),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.date_range),
-                          Text(report.date),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.location_city),
-                          Text(report.municipality),
-                        ],
-                      ),
-                    ],
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: Card(
+              color: Colors.white, // Adjust color as needed
+              child: Column(
+                children: [
+                  // Displaying the first image from the list of base64-encoded images
+                  _buildImageFromBase64(report.imageBase64Strings.first),
+                  ListTile(
+                    title: Text(report.reportTitle),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.date_range),
+                            Text(report.date),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.location_city),
+                            Text(report.municipality),
+                          ],
+                        ),
+                      ],
+                    ),
+                    trailing: const Icon(Icons.dirty_lens_outlined),
                   ),
-                  trailing: const Icon(Icons.warning),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

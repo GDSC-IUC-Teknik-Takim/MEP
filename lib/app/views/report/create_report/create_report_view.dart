@@ -43,8 +43,8 @@ class _CreateReportState extends State<CreateReport> {
       });
     }
 
-    final image = await ImagePicker().pickImage(source: ImageSource.camera
-        ,imageQuality: 70);
+    final image = await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 30);
     if (image != null) {
       setState(() {
         pickedImages = [XFile(image.path)];
@@ -89,7 +89,7 @@ class _CreateReportState extends State<CreateReport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create a report")),
+      appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -166,14 +166,19 @@ class _CreateReportState extends State<CreateReport> {
               pickedImages == null
                   ? Text('Please take a photo of the scene')
                   : Column(
-                children: [
-                  Text('Photo successfully added'),
-                ],
-              ),
+                      children: [
+                        Text('Photo successfully added'),
+                      ],
+                    ),
               SizedBox(height: 20.0),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ElevatedButton(
                   onPressed: selectImageFromCamera,
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF325A3E), // Arka plan rengi
+                    onPrimary: Colors.white, // Yazı rengi
+                    minimumSize: Size(210, 35), // Genişlik ve yükseklik
+                  ),
                   child: Text("Take a photo"),
                 )
               ]),
@@ -249,7 +254,12 @@ class _CreateReportState extends State<CreateReport> {
                     }
                   }
                 },
-                child: Text('Complete report'),
+                style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF325A3E), // Arka plan rengi
+                    onPrimary: Colors.white, // Yazı rengi
+                    minimumSize: Size(210, 35), // Genişlik ve yükseklik
+                  ),
+                  child: Text("Complete report"),
               ),
             ],
           ),
@@ -260,15 +270,15 @@ class _CreateReportState extends State<CreateReport> {
 }
 
 Future<String> completeReport(
-    String reportTitle,
-    List<String> imageBase64Strings,
-    String reportDetail,
-    String reportType,
-    String municipality,
-    String location,
-    double latitude,
-    double longitude,
-    ) async {
+  String reportTitle,
+  List<String> imageBase64Strings,
+  String reportDetail,
+  String reportType,
+  String municipality,
+  String location,
+  double latitude,
+  double longitude,
+) async {
   final docReport = FirebaseFirestore.instance.collection('report').doc();
   final json = {
     'reportTitle': reportTitle,

@@ -7,6 +7,7 @@ import 'package:mep/app/data/models/report_model.dart';
 import 'package:mep/app/views/auth/register/register_service.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../my_reports/my_reports_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -62,6 +63,18 @@ class _AdminButtonsState extends State<AdminButtons> {
 
             final docUser = FirebaseFirestore.instance.collection('report').doc(widget.report.id);
             docUser.update({'status': widget.report.status});
+
+            Fluttertoast.showToast(
+          msg: "Succesfuly updated please refresh page", 
+          toastLength: Toast.LENGTH_SHORT, 
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Color(0xFF325A3E),
+          textColor: Colors.white,
+        );
+
+
+
+
           },
           iconData: Icons.edit,
         ),

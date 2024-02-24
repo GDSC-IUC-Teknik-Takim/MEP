@@ -43,7 +43,18 @@ class _MyReportsAdminPageState extends State<MyReportsAdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Reports"),
+        automaticallyImplyLeading: true, // Geri butonunu kaldırır
+        title: Center(
+          child: Text("reports sent to you"),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              // Üç nokta butonuna tıklandığında yapılacak işlemler
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('report').snapshots(),
