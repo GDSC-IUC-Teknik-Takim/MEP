@@ -35,18 +35,19 @@ class _CreateReportState extends State<CreateReport> {
     }
   }
 
-  Future selectImages() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowMultiple: true,
-    );
-    if (result != null) {
+  Future selectImageFromCamera() async {
+    // Eğer mevcut olarak seçilmiş bir fotoğraf varsa, onu sil
+    if (pickedImages != null) {
       setState(() {
-        if (pickedImages != null) {
-          pickedImages!.addAll(result.files.map((file) => XFile(file.path!)));
-        } else {
-          pickedImages = result.files.map((file) => XFile(file.path!)).toList();
-        }
+        pickedImages!.clear();
+      });
+    }
+
+    final image = await ImagePicker().pickImage(source: ImageSource.camera
+        ,imageQuality: 70);
+    if (image != null) {
+      setState(() {
+        pickedImages = [XFile(image.path)];
       });
     }
   }
@@ -162,10 +163,18 @@ class _CreateReportState extends State<CreateReport> {
                 ),
               ),
               SizedBox(height: 40.0),
+              pickedImages == null
+                  ? Text('Please take a photo of the scene')
+                  : Column(
+                children: [
+                  Text('Photo successfully added'),
+                ],
+              ),
+              SizedBox(height: 20.0),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ElevatedButton(
-                  onPressed: selectImages,
-                  child: Text("Select image(s)"),
+                  onPressed: selectImageFromCamera,
+                  child: Text("Take a photo"),
                 )
               ]),
               SizedBox(
@@ -277,4 +286,3 @@ Future<String> completeReport(
 
   return docReport.id; // Return the ID of the newly created document
 }
-
