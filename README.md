@@ -56,6 +56,11 @@ Share location enables users to share report scene other people via social media
 Profile page: 
 Profile page is the page which user's nickname and e mail is displayed. Users can log out via log out button in this page.
 
+Contributors:
+https://github.com/Erdal-Tanirkut
+https://github.com/cetinoguzhan
+https://github.com/enesate
+
 
 
 
