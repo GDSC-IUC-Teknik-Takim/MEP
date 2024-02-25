@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mep/app/views/report/my_reports/report_card.dart';
-import '../../../data/models/report_model.dart';
-import '../../home/home_view.dart';
-import '../../profile/profile_page.dart';
+import 'package:mep/app/data/models/report_model.dart'; // Report modelini buradan al
 
 class MyReportsPage extends StatelessWidget {
   const MyReportsPage({Key? key}) : super(key: key);
@@ -11,7 +9,7 @@ class MyReportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MyReports(),
+      body: const MyReports(),
     );
   }
 }
@@ -24,29 +22,34 @@ class MyReports extends StatefulWidget {
 }
 
 class _MyReportsState extends State<MyReports> {
-  final Stream<QuerySnapshot> _reportsStream = FirebaseFirestore.instance.collection('report').snapshots();
+  final Stream<QuerySnapshot> _reportsStream =
+  FirebaseFirestore.instance.collection('report').snapshots();
+
+  List<Report> _buildReportsList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      return Report.fromJson(doc.id, data); // Report modelini kullan
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       child: StreamBuilder<QuerySnapshot>(
         stream: _reportsStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final reports = _buildReportsList(snapshot.data!);
+            return reports.isEmpty
+                ? const Center(child: Text('No reports available.'))
+                : ReportCard(reports: reports); // Report listesini gönder
           } else {
-            final List<QueryDocumentSnapshot> documents = snapshot.data!.docs.toList();
-            final List<ReportData> reportDataList = documents.map((doc) => ReportData.fromDocument(doc)).toList();
-            final List<Report> reports = reportDataList.map((reportData) => Report.fromJson(reportData.id, reportData.data)).toList();
-
-            if (reports.isEmpty) {
-              return Center(child: Text('No reports available.'));
-            } else {
-              return ReportCard(reports: reports);
-            }
+            return const Center(child: Text('Something went wrong.'));
           }
         },
       ),

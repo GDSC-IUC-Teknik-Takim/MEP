@@ -34,6 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _emailController.dispose();
     _phoneController.dispose();
     _aboutController.dispose();
+    _isEditing = false;
     super.dispose();
   }
 
@@ -52,22 +53,26 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildClearSharedPreferencesButton() {
-  return IconButton(
-    onPressed: () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.clear();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
-    },
-    icon: Icon(Icons.exit_to_app), // Exit icon
-    tooltip: 'Logout',
-  );
-}
+    return IconButton(
+      onPressed: () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
+        }
+      },
+      icon: Icon(Icons.exit_to_app), // Exit icon
+      tooltip: 'Logout',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    _loadUserInfo(); // _loadUserInfo() methodunu build içinde çağırın
+
     return Scaffold(
       appBar: null,
       body: Padding(

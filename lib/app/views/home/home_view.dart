@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mep/app/views/home/home_view.dart';
 import 'package:mep/app/views/home/maps.dart';
 import 'package:mep/app/views/profile/profile_page.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_page.dart';
-import 'package:mep/app/views/report/create_report/create_report_view.dart';
-import 'package:mep/app/views/home/home_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +12,10 @@ class HomePage extends StatefulWidget {
 
 class _NavigationBarPageState extends State<HomePage> {
   int _selectedIndex = 1;
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

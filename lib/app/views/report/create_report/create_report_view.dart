@@ -1,13 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:mep/app/core/extensions/build_context_extensions.dart';
 import 'package:mep/app/views/report/create_report/report_succesful.dart';
 import 'dart:convert';
-import '../my_reports/my_reports_page.dart';
 
 class CreateReport extends StatefulWidget {
   final String? adress;
@@ -26,26 +27,21 @@ class _CreateReportState extends State<CreateReport> {
   Future uploadImages() async {
     if (pickedImages != null) {
       for (XFile image in pickedImages!) {
-        // Read the bytes of the image file
         List<int> bytes = await image.readAsBytes();
-        // Encode the bytes as a base64 string
         String base64Image = base64Encode(bytes);
-        // Add the base64 string to the list
         imageBase64Strings.add(base64Image);
       }
     }
   }
 
   Future selectImageFromCamera() async {
-    // Eğer mevcut olarak seçilmiş bir fotoğraf varsa, onu sil
     if (pickedImages != null) {
       setState(() {
         pickedImages!.clear();
       });
     }
 
-    final image = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 35);
+    final image = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 35);
     if (image != null) {
       setState(() {
         pickedImages = [XFile(image.path)];
@@ -72,15 +68,9 @@ class _CreateReportState extends State<CreateReport> {
     'Land Pollution',
     'Select pollution type'
   ];
-  final List<String> municipalities = [
-    'Kadıköy',
-    'Avcılar',
-    'Küçükçekmece',
-    'Select Municipality'
-  ];
+  final List<String> municipalities = ['Kadıköy', 'Avcılar', 'Küçükçekmece', 'Select Municipality'];
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     titleController.dispose();
     locationController.dispose();
     detailController.dispose();
@@ -92,20 +82,20 @@ class _CreateReportState extends State<CreateReport> {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Text("Create a Report", textScaleFactor: 2.5),
-              SizedBox(height: 40.0),
+              const Text("Create a Report", textScaleFactor: 2.5),
+              const SizedBox(height: 40.0),
               TextFormField(
                 controller: titleController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.edit),
                   labelText: 'Report title',
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               DropdownButtonFormField<String>(
                 value: selectedMunicipality,
                 items: municipalities.map((String type) {
@@ -119,12 +109,12 @@ class _CreateReportState extends State<CreateReport> {
                     selectedMunicipality = newValue!;
                   });
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Municipality',
                   prefixIcon: Icon(Icons.add_business_outlined),
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               DropdownButtonFormField<String>(
                 value: selectedPollutionType,
                 items: pollutionTypes.map((String type) {
@@ -138,52 +128,52 @@ class _CreateReportState extends State<CreateReport> {
                     selectedPollutionType = newValue!;
                   });
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Pollution Type',
                   prefixIcon: Icon(Icons.eco_outlined),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
                 controller: locationController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.location_on_outlined),
                   labelText: 'Location',
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
                 controller: detailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.info_outline),
                   labelText: 'Details',
                 ),
               ),
-              SizedBox(height: 40.0),
+              const SizedBox(height: 40.0),
               pickedImages == null
-                  ? Text('Please take a photo of the scene')
-                  : Column(
-                      children: [
-                        Text('Photo successfully added'),
-                      ],
-                    ),
-              SizedBox(height: 20.0),
+                  ? const Text('Please take a photo of the scene')
+                  : const Column(
+                children: [
+                  Text('Photo successfully added'),
+                ],
+              ),
+              const SizedBox(height: 20.0),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ElevatedButton(
                   onPressed: selectImageFromCamera,
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF325A3E), // Arka plan rengi
-                    onPrimary: Colors.white, // Yazı rengi
-                    minimumSize: Size(210, 35), // Genişlik ve yükseklik
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color(0xFF325A3E),
+                    minimumSize: const Size(210, 35),
                   ),
-                  child: Text("Take a photo"),
+                  child: const Text("Take a photo"),
                 )
               ]),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -193,49 +183,45 @@ class _CreateReportState extends State<CreateReport> {
                       detailController.text.isEmpty ||
                       pickedImages == null ||
                       pickedImages!.isEmpty) {
-                    // Show a warning message if any required field is empty
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Warning"),
-                          content: Text(
+                          title: const Text("Warning"),
+                          content: const Text(
                               "Please fill in all of the report informations and select at least one image."),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text("OK"),
+                              child: const Text("OK"),
                             ),
                           ],
                         );
                       },
                     );
                   } else {
-                    // All fields are filled, proceed with report creation
                     await uploadImages();
                     if (imageBase64Strings.isEmpty) {
-                      // Show a warning message if no images are selected
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("Warning"),
-                            content: Text("Please select at least one image."),
+                            title: const Text("Warning"),
+                            content: const Text("Please select at least one image."),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text("OK"),
+                                child: const Text("OK"),
                               ),
                             ],
                           );
                         },
                       );
                     } else {
-                      // Images are inserted, proceed with report creation
                       final reportId = await completeReport(
                         titleController.text,
                         imageBase64Strings,
@@ -247,20 +233,16 @@ class _CreateReportState extends State<CreateReport> {
                         widget.geopoint!.longitude,
                       );
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReportSuccesful()));
-                      // Used Nreport as needed
+                      showReportSuccessfulDialog(context);
                     }
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF325A3E), // Arka plan rengi
-                    onPrimary: Colors.white, // Yazı rengi
-                    minimumSize: Size(210, 35), // Genişlik ve yükseklik
-                  ),
-                  child: Text("Complete report"),
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xFF325A3E),
+                  minimumSize: const Size(210, 35),
+                ),
+                child: const Text("Complete report"),
               ),
             ],
           ),
@@ -270,16 +252,68 @@ class _CreateReportState extends State<CreateReport> {
   }
 }
 
+void showReportSuccessfulDialog(BuildContext context) {
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 150,
+              width: 150,
+              child: Image.asset(
+                'assets/images/basarili.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+            const Text(
+              "Report Successfully Completed.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF325A3E),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              "Your report arrived authorities successfully. Just wait ... Municipality will arrive the scene asap.",
+              textAlign: TextAlign.center,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xFF325A3E),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(38.0),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: const Text('Continue'),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 Future<String> completeReport(
-  String reportTitle,
-  List<String> imageBase64Strings,
-  String reportDetail,
-  String reportType,
-  String municipality,
-  String location,
-  double latitude,
-  double longitude,
-) async {
+    String reportTitle,
+    List<String> imageBase64Strings,
+    String reportDetail,
+    String reportType,
+    String municipality,
+    String location,
+    double latitude,
+    double longitude,
+    ) async {
   final docReport = FirebaseFirestore.instance.collection('report').doc();
   final json = {
     'reportTitle': reportTitle,
@@ -294,6 +328,5 @@ Future<String> completeReport(
     'date': DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
   };
   await docReport.set(json);
-
-  return docReport.id; // Return the ID of the newly created document
+  return docReport.id;
 }
