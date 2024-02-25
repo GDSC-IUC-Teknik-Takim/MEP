@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mep/app/views/home/admin_home_view.dart';
 import 'package:mep/app/views/home/home_view.dart';
+import 'package:mep/app/views/home/navigation_bar/admin_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mep/app/views/home/home_view.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_admin_page.dart';
@@ -134,7 +135,7 @@ class AuthService {
       if(municipalities.contains(fullName)){
       navigator.pushReplacement(
         MaterialPageRoute(
-          builder: (context) => AdminHomePage(), // Assuming HomeView is the name of your home page widget.
+          builder: (context) => NavigationBarPage_admin(), // Assuming HomeView is the name of your home page widget.
         ),
       );
       }

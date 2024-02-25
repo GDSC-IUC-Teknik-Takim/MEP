@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:mep/app/views/report/create_report/report_succesful.dart';
 import 'dart:convert';
 import '../my_reports/my_reports_page.dart';
 
@@ -44,7 +45,7 @@ class _CreateReportState extends State<CreateReport> {
     }
 
     final image = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 30);
+        .pickImage(source: ImageSource.camera, imageQuality: 50);
     if (image != null) {
       setState(() {
         pickedImages = [XFile(image.path)];
@@ -249,7 +250,7 @@ class _CreateReportState extends State<CreateReport> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyReportsPage()));
+                              builder: (context) => ReportSuccesful()));
                       // Used Nreport as needed
                     }
                   }

@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:mep/app/views/home/home_view.dart';
 import 'package:mep/app/views/home/maps.dart';
 import 'package:mep/app/views/profile/profile_page.dart';
+import 'package:mep/app/views/profile/profile_admin_page.dart';
 import 'package:mep/app/views/report/my_reports/my_reports_page.dart';
+import 'package:mep/app/views/report/my_reports/my_reports_admin_page.dart';
 import 'package:mep/app/views/report/create_report/create_report_view.dart';
+import 'package:mep/app/views/home/admin_home_view.dart';
 
-class NavigationBarPage extends StatefulWidget {
-  const NavigationBarPage({Key? key}) : super(key: key);
+class NavigationBarPage_admin extends StatefulWidget {
+  const NavigationBarPage_admin({Key? key}) : super(key: key);
 
   @override
-  State<NavigationBarPage> createState() => _NavigationBarPageState();
+  State<NavigationBarPage_admin> createState() => _NavigationBarPageState();
 }
 
-class _NavigationBarPageState extends State<NavigationBarPage> {
+class _NavigationBarPageState extends State<NavigationBarPage_admin> {
   int _selectedIndex = 1;
 
   @override
@@ -21,7 +24,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: _selectedIndex == 0
-            ? const Text("Public reports")
+            ? const Text("Reports sent to you")
             : _selectedIndex == 1
             ? const Text("Home")
             : const Text("Profile"),
@@ -51,9 +54,9 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
   }
 
   final List<Widget> _pages = [
-    const MyReportsPage(),
-    const MapsView(),
-    const ProfilePage(),
+    const MyReportsAdminPage(),
+    const AdminHomePage(),
+    const AdminProfilePage(),
   ];
 
   void _onItemTapped(int index) {

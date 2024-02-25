@@ -42,20 +42,6 @@ class _MyReportsAdminPageState extends State<MyReportsAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true, // Geri butonunu kaldırır
-        title: Center(
-          child: Text("Reports sent to you"),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              // Üç nokta butonuna tıklandığında yapılacak işlemler
-            },
-          ),
-        ],
-      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('report').snapshots(),
         builder: (context, snapshot) {
@@ -87,49 +73,7 @@ class _MyReportsAdminPageState extends State<MyReportsAdminPage> {
           }
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'Reports',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFF325A3E),
-        unselectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-      ),
     );
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    if (index == 0) {
-      // 'Reports' sayfasına yönlendirme yapılabilir (şu anda 'MyReportsPage' zaten aktif olduğundan bir şey yapmaya gerek yok)
-    } else if (index == 1) {
-      // 'Home' sayfasına yönlendirme yapılabilir
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => AdminHomePage()),
-      );
-    } else if (index == 2) {
-      // 'Profile' sayfasına yönlendirme yapılabilir
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const AdminProfilePage()),
-      );
-    }
   }
 }
 
@@ -139,3 +83,4 @@ class ReportData {
 
   ReportData({required this.id, required this.data});
 }
+

@@ -85,7 +85,7 @@ class ReportSuccesful extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyReportsPage()),
+                              builder: (context) => HomePage()),
                         );
                       },
                       child: Text('Continue'),

@@ -7,6 +7,7 @@ import 'package:mep/app/data/models/report_model.dart';
 import 'package:mep/app/views/auth/register/register_service.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../my_reports/my_reports_page.dart';
+import 'package:mep/app/views/home/navigation_bar/navigation_bar.dart';
 
 
 
@@ -34,7 +35,7 @@ class _ButtonsState extends State<Buttons> {
             docUser.delete();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyReportsPage()),
+              MaterialPageRoute(builder: (context) => NavigationBarPage()),
             );
           },
           iconData: Icons.delete,

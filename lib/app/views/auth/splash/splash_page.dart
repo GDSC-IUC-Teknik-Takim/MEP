@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mep/app/views/auth/login/login_view.dart';
 import 'package:mep/app/views/auth/register/register_view.dart';
 import 'package:mep/app/views/home/admin_home_view.dart';
+import 'package:mep/app/views/home/navigation_bar/navigation_bar.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

@@ -5,106 +5,52 @@ import '../../../data/models/report_model.dart';
 import '../../home/home_view.dart';
 import '../../profile/profile_page.dart';
 
-class MyReportsPage extends StatefulWidget {
+class MyReportsPage extends StatelessWidget {
   const MyReportsPage({Key? key}) : super(key: key);
-
-  @override
-  _MyReportsPageState createState() => _MyReportsPageState();
-}
-
-class _MyReportsPageState extends State<MyReportsPage> {
-  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-  automaticallyImplyLeading: true, // Geri butonunu kaldırır
-  title: Center(
-    child: Text("Public reports"),
-  ),
-  actions: [
-    IconButton(
-      icon: Icon(Icons.more_vert),
-      onPressed: () {
-        // Üç nokta butonuna tıklandığında yapılacak işlemler
-      },
-    ),
-  ],
-),
-
-      body: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('report').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              final List<QueryDocumentSnapshot> documents =
-                  snapshot.data!.docs.toList();
-              final List<ReportData> reportDataList = documents.map((doc) {
-                return ReportData.fromDocument(doc);
-              }).toList();
-
-              List<Report> reports = reportDataList.map((reportData) {
-                return Report.fromJson(reportData.id, reportData.data);
-              }).toList();
-
-              if (reports.isEmpty) {
-                return Center(child: Text('No reports available.'));
-              } else {
-                return ReportCard(reports: reports);
-              }
-            }
-          },
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'Reports',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFF325A3E),
-        unselectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-      ),
+      body: MyReports(),
     );
   }
+}
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+class MyReports extends StatefulWidget {
+  const MyReports({Key? key}) : super(key: key);
 
-    if (index == 0) {
-      // 'Reports' sayfasına yönlendirme yapılabilir (şu anda 'MyReportsPage' zaten aktif olduğundan bir şey yapmaya gerek yok)
-    } else if (index == 1) {
-      // 'Home' sayfasına yönlendirme yapılabilir
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-    } else if (index == 2) {
-      // 'Profile' sayfasına yönlendirme yapılabilir
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ProfilePage()),
-      );
-    }
+  @override
+  _MyReportsState createState() => _MyReportsState();
+}
+
+class _MyReportsState extends State<MyReports> {
+  final Stream<QuerySnapshot> _reportsStream = FirebaseFirestore.instance.collection('report').snapshots();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _reportsStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            final List<QueryDocumentSnapshot> documents = snapshot.data!.docs.toList();
+            final List<ReportData> reportDataList = documents.map((doc) => ReportData.fromDocument(doc)).toList();
+            final List<Report> reports = reportDataList.map((reportData) => Report.fromJson(reportData.id, reportData.data)).toList();
+
+            if (reports.isEmpty) {
+              return Center(child: Text('No reports available.'));
+            } else {
+              return ReportCard(reports: reports);
+            }
+          }
+        },
+      ),
+    );
   }
 }
 

@@ -105,7 +105,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  
       body: _currentP == null
           ? Center(
               child: CircularProgressIndicator(),
@@ -121,44 +120,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
             ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'Reports',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFF325A3E),
-        unselectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-      ),
     );
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    if (index == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyReportsAdminPage()),
-      );
-    } else if (index == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const AdminProfilePage()),
-      );
-    }
   }
 }
