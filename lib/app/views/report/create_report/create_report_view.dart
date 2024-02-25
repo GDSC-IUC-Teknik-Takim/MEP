@@ -45,7 +45,7 @@ class _CreateReportState extends State<CreateReport> {
     }
 
     final image = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 50);
+        .pickImage(source: ImageSource.camera, imageQuality: 35);
     if (image != null) {
       setState(() {
         pickedImages = [XFile(image.path)];
